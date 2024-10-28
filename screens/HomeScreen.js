@@ -22,7 +22,7 @@ export default function HomeScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.head}>
-            <Header/>
+                <Header navigation={navigation}/>
             </View>
             <ScrollView contentContainerStyle={styles.main}>
 
