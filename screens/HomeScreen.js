@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Image,
-  ImageBackground, 
+  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
@@ -17,15 +17,15 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 export default function HomeScreen({ navigation }) {
 
 
-    
+
 
     return (
         <View style={styles.container}>
             <View style={styles.head}>
-                <Header/>
+            <Header/>
             </View>
             <ScrollView contentContainerStyle={styles.main}>
-                
+
                 <Card/>
                 <Card/>
                 <Card/>
@@ -36,8 +36,8 @@ export default function HomeScreen({ navigation }) {
                 <Card/>
                 <Card/>
                 <Card/>
-                
-                
+
+
         </ScrollView>
         </View>
 
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     container: {
         flex:1,
         marginTop: '10%',
-        
+
     },
 
     head: {
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     },
 
     main: {
-        
+
     },
 
     main: {

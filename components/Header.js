@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
     StyleSheet,
     Text,
     View,
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     color: {
         color: 'black',
     },
-    
+
     header: {
         width: '100%',
         height: '100%',
