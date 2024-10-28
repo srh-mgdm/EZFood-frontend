@@ -9,12 +9,16 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 //creer une fct qui gere la redirection vers la page login en fct de l'etat de connnection
 
-export const Header = () => {
+export const Header = ({navigation}) => {
+
+    const handleLogout = () => {
+        navigation.navigate('Login');
+    }
     return (
         <View>
             <View style={[styles.header,styles.background]}>
                 <Text style={[styles.textHead, styles.color]} >EZ FOOD</Text>
-                <FontAwesome name='user' size={30} color='white' onPress={() => navigation.navigate('Login')}/>
+                <FontAwesome name='user' size={30} color='white' onPress={() => handleLogout()}/>
                     {/* Redirection vers la page de connection */}
             </View>
         </View>
