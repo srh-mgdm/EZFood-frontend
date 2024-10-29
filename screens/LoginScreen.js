@@ -3,6 +3,8 @@ import { View, Text, TextInput, StyleSheet, Pressable, KeyboardAvoidingView, Pla
 import { FontAwesome } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { login } from '../reducers/user'; // Import the login action from user reducer
+import { Alert } from 'react-native';
+
 
 
 
@@ -53,10 +55,13 @@ export default function LoginScreen() {
   };
 
   return (
+
+
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} //Adjusts layout for keyboard on iOS and Android
     >
+
       <View style={styles.form}>
          {/* Form title changes based on the mode Connection ou register */}
         <Text style={styles.title}>{isLogin ? 'Connexion' : 'Inscription'}</Text>
@@ -129,6 +134,7 @@ export default function LoginScreen() {
         </Text>
       </View>
     </KeyboardAvoidingView>
+
   );
 }
 
