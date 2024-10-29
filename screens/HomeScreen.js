@@ -96,7 +96,6 @@ export default function HomeScreen({ navigation }) {
                 <Header navigation={navigation} />
             </View>
             <ScrollView contentContainerStyle={styles.main}>
-<<<<<<< HEAD
                 <Card navigation={navigation} />
                 <Card navigation={navigation} />
                 <Card navigation={navigation} />
@@ -108,23 +107,6 @@ export default function HomeScreen({ navigation }) {
                 <Card navigation={navigation} />
                 <Card navigation={navigation} />
             </ScrollView>
-=======
-
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-
-
-                
-        </ScrollView>
->>>>>>> db2be50950c9125f62c58508ed3c08b32abb0fda
         </View>
     );
 }
