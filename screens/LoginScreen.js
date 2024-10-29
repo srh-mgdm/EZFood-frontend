@@ -4,7 +4,6 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { login } from '../reducers/user'; // Import the login action from user reducer
 import { Alert } from 'react-native';
-import { BACKEND_ADDRESS } from '@env'; // Importing BACKEND_ADDRESS from .env
 
 
 
@@ -23,7 +22,7 @@ export default function LoginScreen({ navigation }) {
 
    // Function to handle login or signup
    const handlePress = () => {
-    const url = `${BACKEND_ADDRESS}/users/${isLogin ? 'signin' : 'signup'}`;
+    const url = `${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/users/${isLogin ? 'signin' : 'signup'}`;
 
     fetch(url, {
       method: 'POST',
