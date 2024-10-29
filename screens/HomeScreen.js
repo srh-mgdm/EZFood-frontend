@@ -107,6 +107,13 @@ export default function HomeScreen({ navigation }) {
                 <Card navigation={navigation} />
                 <Card navigation={navigation} />
             </ScrollView>
+=======
+
+                <Card/>
+                
+                
+        </ScrollView>
+>>>>>>> db2be50950c9125f62c58508ed3c08b32abb0fda
         </View>
     );
 }

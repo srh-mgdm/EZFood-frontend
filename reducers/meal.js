@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  value: {  },
+  value: [],
 };
 
 export const mealSlice = createSlice({
@@ -9,11 +9,11 @@ export const mealSlice = createSlice({
   initialState,
   reducers: {
     addMeal: (state, action) => {
-      
+        state.value.push(action.payload);
     },
     
   },
 });
 
-export const { } = mealSlice.actions;
+export const { addMeal } = mealSlice.actions;
 export default mealSlice.reducer;
