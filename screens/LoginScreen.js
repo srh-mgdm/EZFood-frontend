@@ -8,7 +8,7 @@ import { Alert } from 'react-native';
 
 
 
-const BACKEND_ADDRESS= "http://192.168.100.126:3000"
+const BACKEND_ADDRESS= "http://192.168.25.148:3000"
 
 // useState to manage form mode (connection or registeration) and input values
 export default function LoginScreen() {
