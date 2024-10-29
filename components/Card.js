@@ -5,19 +5,87 @@ import {
     View,
   } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+    
 
-export const Card = () => {
+    
+    
+    const handleAddMeal = () => {
+        fetch('http://localhost:3000/meals', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mealname: mealname, }),
+        }).then(response => response.json())
+          .then(data => {
+            if (data.result) {
+              dispatch(login({ username: signInUsername, token: data.token }));
+              
+            }
+          });
+      };
+
+      
+
+
+
+export const Card = ({navigation}) => {
+
+    const [meal, setMeal] = useState(null); 
+    const [mealname, setMealname] = useState('');
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.value.token);
+
+    const tab = [
+                    {mealName : 'Pates au saumon',dayName : 'Lundi',dayNumber : 1 },
+                    {mealName : 'Crepes au nutella',dayName : 'Lundi',dayNumber : 1 },
+                    {mealName : 'Riz au curry',dayName : 'Mardi',dayNumber : 2 },
+                    {mealName : 'Pates bolognaise',dayName : 'Mardi',dayNumber : 2 },
+                    {mealName : 'Salade de thon',dayName : 'Mercredi',dayNumber : 3 },
+                    {mealName : 'Gaufres confiture',dayName : 'Mercredi',dayNumber : 3 },
+                    {mealName : 'Pates au nutella',dayName : 'Jeudi',dayNumber : 4 },
+                    {mealName : 'Macdo',dayName : 'Jeudi',dayNumber : 4 },
+    ]
+
+    // useEffect(() => {
+    //     if (!user) {
+
+    //     }
+         
+    //  }, []);
+
+        let card;
+             
+        if (!meal) {
+            card = tab.map((data , i) => ( 
+                <View key={i} style={styles.meal}> 
+                    <Text> {data.dayName} - Jour {data.dayNumber} </Text>
+                    <FontAwesome name='plus' size={30} color='white' onPress={() => navigation.navigate('Meal')}/>
+                    <Text style = {styles.color}> ADD MEAL</Text>    
+                </View>
+            ))
+        } else {
+            card = tab.map((data , i) => ( 
+                <View key={i} style={styles.meal}>
+                    <Text> Jour {meal.dayNumber} </Text>
+                    <FontAwesome name='trash-o' size={30} color='white' onPress={() => setMeal(null)}/>
+                    <Text style = {styles.color}> {meal.mealName} </Text> 
+                </View>
+            ))
+        }
+       
+
+
     return (
-        <View style={[styles.card,styles.background]}>
-            <Text>Day</Text>
-            <View style={styles.meal}>
-                <FontAwesome name='plus' size={30} color='white' onPress={() => navigation.navigate('Meal')}/> 
+        <View style={styles.card}>
+            <View style={[styles.meal , styles.background]}>
+                    {card}
                     {/* Redirection vers la page meal */}
-                <Text style = {styles.color}>ADD MEAL</Text>
+                
             </View>
             <View style={[styles.meal , styles.background]}>
-                <FontAwesome name='plus' size={30} color='white' onPress={() => navigation.navigate('Meal')}/>
-                <Text style = {styles.color}>ADD MEAL</Text>
+                    {card}
+                    {/* supprimer un repas enregistré */}
             </View>
         </View>
 
@@ -50,7 +118,9 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '48%',
         flexDirection: 'row',
-        justifyContent:'space-around'
+        justifyContent:'space-around',
+        borderWidth: 1,
+        borderColor: 'black',
     }
 
 

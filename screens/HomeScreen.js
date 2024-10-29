@@ -27,16 +27,6 @@ export default function HomeScreen({ navigation }) {
             <ScrollView contentContainerStyle={styles.main}>
                 
                 <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                
                 
         </ScrollView>
         </View>

@@ -8,22 +8,23 @@ import LoginScreen from './screens/LoginScreen';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
+import meal from './reducers/meal';
 
 const store = configureStore({
-    reducer: { user },
+    reducer: { user , meal },
   });
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
     return (
-        <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </Provider>
     );
   }
