@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable, KeyboardAvoidingView, Platform, ImageBackground } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { login } from '../reducers/user'; // Import the login action from user reducer
 import { Alert } from 'react-native';
+import { BACKEND_ADDRESS } from '@env'; // Importing BACKEND_ADDRESS from .env
 
 
 
 
-const BACKEND_ADDRESS= "http://192.168.25.148:3000"
 
 // useState to manage form mode (connection or registeration) and input values
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
 
   const [isLogin, setIsLogin] = useState(true); //Tracks if user is in login mode (true) or signup mode (false)
   const [email, setEmail] = useState(''); // Stores the email input
@@ -40,6 +40,8 @@ export default function LoginScreen() {
           // Dispatch login action with token and username directly from server response
           dispatch(login({ token: data.token, username: data.username}));
           Alert.alert('Success', isLogin ? 'Login successful!' : 'Signup successful!');
+
+          navigation.navigate('Home');
           // Reset form fields after successful action
           setEmail('');
           setPassword('');
@@ -56,7 +58,11 @@ export default function LoginScreen() {
 
   return (
 
-
+    <ImageBackground
+    source={require('../assets/background2.jpg')}
+    style={styles.background}
+    resizeMode="cover"
+  >
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} //Adjusts layout for keyboard on iOS and Android
@@ -134,21 +140,28 @@ export default function LoginScreen() {
         </Text>
       </View>
     </KeyboardAvoidingView>
+    </ImageBackground>
 
   );
 }
 
 const styles = StyleSheet.create({
+   background: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+      },
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    // backgroundColor: '#f0f0f0',
     alignItems: 'center',
     justifyContent: 'center',
   },
   form: {
     width: '80%',
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: 10,
     alignItems: 'center',
     shadowColor: '#000',

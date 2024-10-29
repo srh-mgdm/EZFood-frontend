@@ -1,9 +1,67 @@
+// import React from 'react';
+// import {
+//     StyleSheet,
+//     Text,
+//     View,
+//   } from 'react-native';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+// export const Card = () => {
+//     return (
+//         <View style={[styles.card,styles.background]}>
+//             <Text>Day</Text>
+//             <View style={styles.meal}>
+//                 <FontAwesome name='plus' size={30} color='white' onPress={() => navigation.navigate('Meal')}/>
+//                     {/* Redirection vers la page meal */}
+//                 <Text style = {styles.color}>ADD MEAL</Text>
+//             </View>
+//             <View style={[styles.meal , styles.background]}>
+//                 <FontAwesome name='plus' size={30} color='white' onPress={() => navigation.navigate('Meal')}/>
+//                 <Text style = {styles.color}>ADD MEAL</Text>
+//             </View>
+//         </View>
+
+//     )
+// }
+
+// const styles = StyleSheet.create({
+//     background: {
+//         backgroundColor: 'blue',
+//     },
+
+//     color: {
+//         color: 'white',
+//     },
+
+//     card: {
+//         height: 150,
+//         width: 180,
+//         flexDirection: 'column',
+//         borderWidth: 1,
+//         borderColor: 'red',
+//         justifyContent: 'space-between',
+//         alignItems: 'center' ,
+//         marginTop: 20,
+
+
+
+//     },
+//     meal: {
+//         width: '100%',
+//         height: '48%',
+//         flexDirection: 'row',
+//         justifyContent:'space-around'
+//     }
+
+
+// })
+
 import React from 'react';
-import { 
+import {
     StyleSheet,
     Text,
     View,
-  } from 'react-native';
+} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -99,15 +157,13 @@ export const Card = ({navigation}) => {
                 
             
         </View>
-
-    )
+    );
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     background: {
         backgroundColor: 'blue',
     },
-
     color: {
         color: 'white',
     },
@@ -141,3 +197,4 @@ const styles = StyleSheet.create({
     }
 
 })
+>>>>>>> db2be50950c9125f62c58508ed3c08b32abb0fda
