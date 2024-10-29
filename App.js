@@ -9,15 +9,17 @@ import SearchScreen from './screens/SearchScreen';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
+import meal from './reducers/meal';
 
 const store = configureStore({
-    reducer: { user },
+    reducer: { user , meal },
   });
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
     return (
+<<<<<<< HEAD
         <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -26,6 +28,15 @@ export default function App() {
           <Stack.Screen name="SearchMeal" component={SearchScreen} />
         </Stack.Navigator>
       </NavigationContainer>
+=======
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+>>>>>>> db2be50950c9125f62c58508ed3c08b32abb0fda
       </Provider>
     );
   }
