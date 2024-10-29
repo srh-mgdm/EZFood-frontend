@@ -9,11 +9,14 @@ export const mealSlice = createSlice({
   initialState,
   reducers: {
     addMeal: (state, action) => {
-        state.value.push(action.payload);
+        state.value = action.payload;
     },
     
+    deleteMeal: (state, action) => {
+      state.value = action.payload
+    }
   },
 });
 
-export const { addMeal } = mealSlice.actions;
+export const { addMeal , deleteMeal} = mealSlice.actions;
 export default mealSlice.reducer;
