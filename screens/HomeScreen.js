@@ -1,17 +1,7 @@
 import React from "react";
-import {
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Button,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { Header } from "../components/Header";
-import { Card } from "../components/Card";
+import { DayCard } from "../components/dayCard";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
 export default function HomeScreen({ navigation }) {
@@ -21,7 +11,7 @@ export default function HomeScreen({ navigation }) {
         <Header navigation={navigation} />
       </View>
       <ScrollView contentContainerStyle={styles.main}>
-        <Card navigation={navigation} />
+        <DayCard navigation={navigation} />
       </ScrollView>
     </View>
   );
