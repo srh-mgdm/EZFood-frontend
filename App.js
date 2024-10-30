@@ -10,7 +10,7 @@ import MealDetailScreen from './screens/MealDetailScreen';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
-import meal from './reducers/meal';
+import meal from './reducers/meals';
 
 const store = configureStore({
     reducer: { user , meal },

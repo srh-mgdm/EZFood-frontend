@@ -1,59 +1,57 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, Pressable, TouchableOpacity, KeyboardAvoidingView, Platform, ImageBackground } from 'react-native';
+import { View, Text, TextInput, StyleSheet, FlatList, Pressable, TouchableOpacity, KeyboardAvoidingView, Platform, ImageBackground, Alert } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMeals, selectMeal } from '../reducers/meal';
+import { setMeals, selectMeal } from '../reducers/meals';
 
 
 
 // receiving `navigation` as a prop for navigation functionality
 export default function SearchScreen({ navigation }) {
   const [searchText, setSearchText] = useState(''); // Initialize searchText state for search input text
-  const meals = useSelector((state) => state.meal.value.meals);
+  const meals = useSelector((state) => state.meal.value.meals); // Access the list of meals(searched from user or guest) from Redux to show in FlatList
+  const token = useSelector((state) => state.user.value.token); // Check if user is logged in (token exists)
   const dispatch = useDispatch();
 
- // Define a list of all meals as the data source for searching
-//   const allMeals = [
-//     'Pâtes Carbonara',
-//     'Pâtes au saumon',
-//     'Pâtes et légumes',
-//     'Pâtes et poulet',
-//     'Salade de saumon',
-//     'Pizza aux légumes',
-//     'Soupe au poulet',
-//   ];
-
-// Filter meals based on the search text, showing items that start with the search input
-//   const filteredMeals = allMeals.filter((item) =>
-//     item.toLowerCase().startsWith(searchText.toLowerCase()) // Match items starting with the search text
-//   );
 
 useEffect(() => {
 
-    if (searchText.length > 0) {
+    if (searchText.length > 2) {
 
       fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/name/${searchText}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
 
-            dispatch(setMeals(data.meals));
+            dispatch(setMeals(data.meals)); // Save fetched meals to Redux store
           } else {
-            console.error('Failed to fetch meals');
+            console.error('No meals found matching the search criteria');;
           }
         })
         .catch((error) => console.error('Error fetching meals:', error));
     } else {
 
-      dispatch(setMeals([]));
+      dispatch(setMeals([])); // Clear meals list in Redux if search text is empty
     }
   }, [searchText]);
 
   const handleSelectMeal = (meal) => {
-
     dispatch(selectMeal(meal));
+    setSearchText(meal.mealName); // fill input with the mealName
 
+    // Navigate after updating the input
+  setTimeout(() => {
     navigation.navigate('MealDetailScreen');
+  }, 100); // delay 100ms for update the input
+
+  };
+
+  const handleCreateMeal = () => {
+    if (token) {
+      navigation.navigate('CreateMealScreen'); // Allow logged-in users to create a meal
+    } else {
+      Alert.alert('You need to be logged in to create a meal');
+    }
   };
 
 
@@ -76,7 +74,7 @@ useEffect(() => {
         </View>
 
         {/* Display filtered search results below search bar */}
-        {searchText.length > 0 && (
+        {searchText.length > 2 && (
           <FlatList
             data={meals}
             renderItem={({ item }) => (
@@ -91,7 +89,7 @@ useEffect(() => {
         )}
 
         {/* Button at the bottom of the screen to create a new meal */}
-        <Pressable style={styles.createButton} onPress={() => alert('Créer un repas')}>
+        <Pressable style={[styles.createButton, { opacity: token ? 1 : 0.5 }]} onPress={handleCreateMeal}>
           <Text style={styles.createButtonText}>Créer un repas</Text>
         </Pressable>
       </KeyboardAvoidingView>
@@ -106,56 +104,56 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1, // Allows for full screen usage
-    paddingHorizontal: 20, // Padding on left and right
-    paddingTop: 150, // Top padding to push the content down
+    paddingHorizontal: 20,
+    paddingTop: 150,
   },
   searchContainer: {
     flexDirection: 'row', // Row layout for search icon and input
     alignItems: 'center', // Center icon and text vertically
     backgroundColor: '#F0F0F0', // Light grey background for the search bar
-    borderRadius: 10, // Rounded corners
-    padding: 10, // Padding within the search bar
-    marginBottom: 20, // Space below the search bar
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
   },
   searchIcon: {
     marginRight: 10, // Space between icon and input
   },
   input: {
-    flex: 1, // Input takes remaining space
-    fontSize: 16, // Font size of input text
+    flex: 1,
+    fontSize: 16,
   },
   resultItem: {
-    paddingVertical: 10, // Vertical padding for each item
-    paddingHorizontal: 15, // Horizontal padding for each item
-    borderBottomWidth: 1, // Border at the bottom for separation
-    borderBottomColor: '#D0D0D0', // Light grey color for border
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D0D0D0',
     backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent background
-    borderRadius: 5, // Rounded corners for each item
+    borderRadius: 5,
     marginVertical: 5, // Margin between items
   },
   resultText: {
     color: '#fff', // White color for item text
-    fontWeight: 'bold', // Bold text style
+    fontWeight: 'bold',
   },
   noResultText: {
-    textAlign: 'center', // Center text alignment
-    color: '#fff', // White color for no results text
-    fontWeight: 'bold', // Bold text style
-    padding: 10, // Padding around no results text
+    textAlign: 'center',
+    color: '#fff',
+    fontWeight: 'bold',
+    padding: 10,
   },
   createButton: {
-    backgroundColor: '#7b4fff', // Button background color
-    paddingVertical: 15, // Vertical padding for button
-    paddingHorizontal: 20, // Horizontal padding for button
-    borderRadius: 10, // Rounded corners for button
-    alignItems: 'center', // Center text in the button
+    backgroundColor: '#7b4fff',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: 'center',
     marginVertical: 20, // Vertical margin around the button
-    alignSelf: 'center', // Center horizontally
+    alignSelf: 'center',
     width: '90%', // Button width
   },
   createButtonText: {
-    color: '#fff', // Button text color
-    fontSize: 16, // Font size for button text
-    fontWeight: 'bold', // Bold text for button
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

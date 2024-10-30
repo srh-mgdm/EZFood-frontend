@@ -79,6 +79,7 @@ export default function LoginScreen({ navigation }) {
               style={styles.input}
               placeholder="Nom d'utilisateur"
               value={username}
+              autoCapitalize='none'
               onChangeText={setUsername} // Updates username state on change
             />
           </View>
