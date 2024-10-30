@@ -22,7 +22,7 @@ export default function LoginScreen({ navigation }) {
 
    // Function to handle login or signup
    const handlePress = () => {
-    const url = `http://192.168.25.148:3000/users/${isLogin ? 'signin' : 'signup'}`;
+    const url = `${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/users/${isLogin ? 'signin' : 'signup'}`;
 
     fetch(url, {
       method: 'POST',
