@@ -1,28 +1,61 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, Pressable, TouchableOpacity, KeyboardAvoidingView, Platform, ImageBackground } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMeals } from '../redux/meal';
+import { setMeals, selectMeal } from '../reducers/meal';
+import { useState, useEffect } from 'react';
+
 
 // receiving `navigation` as a prop for navigation functionality
 export default function SearchScreen({ navigation }) {
   const [searchText, setSearchText] = useState(''); // Initialize searchText state for search input text
+  const meals = useSelector((state) => state.meal.value.meals);
+  const dispatch = useDispatch();
 
  // Define a list of all meals as the data source for searching
-  const allMeals = [
-    'Pâtes Carbonara',
-    'Pâtes au saumon',
-    'Pâtes et légumes',
-    'Pâtes et poulet',
-    'Salade de saumon',
-    'Pizza aux légumes',
-    'Soupe au poulet',
-  ];
+//   const allMeals = [
+//     'Pâtes Carbonara',
+//     'Pâtes au saumon',
+//     'Pâtes et légumes',
+//     'Pâtes et poulet',
+//     'Salade de saumon',
+//     'Pizza aux légumes',
+//     'Soupe au poulet',
+//   ];
 
 // Filter meals based on the search text, showing items that start with the search input
-  const filteredMeals = allMeals.filter((item) =>
-    item.toLowerCase().startsWith(searchText.toLowerCase()) // Match items starting with the search text
-  );
+//   const filteredMeals = allMeals.filter((item) =>
+//     item.toLowerCase().startsWith(searchText.toLowerCase()) // Match items starting with the search text
+//   );
+
+useEffect(() => {
+
+    if (searchText.length > 0) {
+
+      fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/name/${searchText}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+
+            dispatch(setMeals(data.meals));
+          } else {
+            console.error('Failed to fetch meals');
+          }
+        })
+        .catch((error) => console.error('Error fetching meals:', error));
+    } else {
+
+      dispatch(setMeals([]));
+    }
+  }, [searchText]);
+
+  const handleSelectMeal = (meal) => {
+
+    dispatch(selectMeal(meal));
+
+    navigation.navigate('MealDetailScreen');
+  };
+
 
   return (
     <ImageBackground source={require('../assets/background2.jpg')} style={styles.background}>
@@ -45,15 +78,15 @@ export default function SearchScreen({ navigation }) {
         {/* Display filtered search results below search bar */}
         {searchText.length > 0 && (
           <FlatList
-            data={filteredMeals}
+            data={meals}
             renderItem={({ item }) => (
-              <TouchableOpacity style={styles.resultItem} onPress={() => setSearchText(item)}>
+              <TouchableOpacity style={styles.resultItem} onPress={() => handleSelectMeal(item)}>
               {/* Each item in the list */}
-                <Text style={styles.resultText}>{item}</Text>
+                <Text style={styles.resultText}>{item.mealName}</Text>
               </TouchableOpacity>
             )}
             ListEmptyComponent={<Text style={styles.noResultText}>Aucun repas trouvé</Text>}
-            keyExtractor={(item, index) => index.toString()} // Unique key for each item
+            keyExtractor={(item) => item._id.toString()} // Unique key for each item
           />
         )}
 
