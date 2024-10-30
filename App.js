@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import SearchScreen from './screens/SearchScreen';
+import MealDetailScreen from './screens/MealDetailScreen';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import user from './reducers/user';
@@ -25,6 +26,7 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SearchMeal" component={SearchScreen} />
+          <Stack.Screen name="MealDetailScreen" component={MealDetailScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       </Provider>
