@@ -10,12 +10,13 @@ export const Card = ({ navigation }) => {
     const user = useSelector((state) => state.user.value.token);
     const meals = useSelector((state) => state.meal.value || []);
 
+    const link = process.env.EXPO_PUBLIC_BACKEND_ADDRESS    
     console.log("Meals =>", meals);
     
 
     useEffect(() => {
         if (user) {
-            fetch('http://192.168.25.148:3000/days', {
+            fetch(`${link}/days`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${user}`,
@@ -35,7 +36,7 @@ export const Card = ({ navigation }) => {
         
     }
 
-   const week = ['Lundi' , 'Mardi' , 'Mercredi' , 'Jeudi' , 'Vendredi' , 'Samedi' , 'Dimanche']
+   const week = ['Lundi' , 'Mardi' , 'Mercredi' , 'Jeudi' , 'Vendredi' , 'Samedi' , 'Dimanche' , 'Lundi']
 
     const card = meals.length > 0 ? (
         meals.map((data, i) => (

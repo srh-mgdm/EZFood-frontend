@@ -21,15 +21,14 @@ export default function HomeScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
+            
             <View style={styles.head}>
                 <Header navigation={navigation}/>
             </View>
+            
             <ScrollView contentContainerStyle={styles.main}>
-
                 <Card navigation={navigation}/>
-                
-                
-        </ScrollView>
+            </ScrollView>
         </View>
 
     )

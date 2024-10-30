@@ -23,10 +23,11 @@ export default function App() {
         <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="MealDetailScreen" component={MealDetailScreen} /> 
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SearchMeal" component={SearchScreen} />
-          <Stack.Screen name="MealDetailScreen" component={MealDetailScreen} />
+          
         </Stack.Navigator>
       </NavigationContainer>
       </Provider>
