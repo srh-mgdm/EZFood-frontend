@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useDispatch, useSelector } from 'react-redux';
-import { addMeal , deleteMeal } from '../reducers/meals';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useDispatch, useSelector } from "react-redux";
+import { addMeal, deleteMeal } from "../reducers/meal";
 
 export const Card = ({ navigation }) => {
-    const [meal, setMeal] = useState(null);
-    const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.value.token);
-    const meals = useSelector((state) => state.meal.value || []);
+  const [meal, setMeal] = useState(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.value.token);
+  const meals = useSelector((state) => state.meal.value || []);
 
     console.log("Meals =>", meals);
 
@@ -86,11 +86,7 @@ export const Card = ({ navigation }) => {
 
     );
 
-    return (
-        <View style={styles.container}>
-            {card}
-        </View>
-    );
+  return <View style={styles.dayCardContainer}>{card}</View>;
 };
 
 const styles = StyleSheet.create({
