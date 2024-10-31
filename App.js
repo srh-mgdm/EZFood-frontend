@@ -12,10 +12,10 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import days from "./reducers/days";
-import meal from "./reducers/meals";
+
 
 const store = configureStore({
-  reducer: { user, days, meal },
+  reducer: { user, days, meals },
 });
 
 const Stack = createNativeStackNavigator();
