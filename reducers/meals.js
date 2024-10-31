@@ -4,6 +4,7 @@ const initialState = {
   value: {
     meals: [], //an array to store all meals fetched from the backend.
     selectedMeal: null, //an object to store the details of a selected meal.
+    selectedMealDetails: null,
   },
 };
 
@@ -15,12 +16,18 @@ export const mealSlice = createSlice({
     // setMeals: updates the meals array in the value state with data fetched from the backend.
     setMeals: (state, action) => {
       state.value.meals = action.payload;
+
     },
 
     // selectMeal: stores the selected meal's details in the value state.
     selectMeal: (state, action) => {
       state.value.selectedMeal = action.payload;
+      console.log("hi:",action.payload);
     },
+
+    selectMealDetail: (state, action) => {
+        state.value.selectedMealDetails = action.payload;
+      },
 
     // clearSelectedMeal: clears the selectedMeal in the value state, setting it back to null.
     clearSelectedMeal: (state) => {
@@ -30,7 +37,7 @@ export const mealSlice = createSlice({
 });
 
 // Exporting actions so they can be used in other components
-export const { setMeals, selectMeal, clearSelectedMeal } = mealSlice.actions;
+export const { setMeals, selectMeal, clearSelectedMeal, selectMealDetail } = mealSlice.actions;
 
 // Exporting the reducer to be used in the Redux store
 export default mealSlice.reducer;
