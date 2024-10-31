@@ -43,7 +43,8 @@ export default function MealDetailScreen({ navigation }) {
           {stepNumber: 5 , stepDescription:"Mélanger"},
           {stepNumber: 5 , stepDescription:"Mélanger"},
           {stepNumber: 5 , stepDescription:"Mélanger"},
-          {stepNumber: 5 , stepDescription:"Mélanger"},{stepNumber: 5 , stepDescription:"Mélangers"},
+          {stepNumber: 5 , stepDescription:"Mélanger"},
+          {stepNumber: 5 , stepDescription:"Mélangers"},
       ],
       mealServings: 1
   }
@@ -98,10 +99,10 @@ export default function MealDetailScreen({ navigation }) {
       </View>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.btn} color='white' onPress={() => navigation.navigate('SearchMeal')}>
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('SearchMeal')}>
                   <Text style={styles.color}>ANNULER</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} >
+        <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Home')}>
                   <Text style={styles.color}>VALIDER</Text>
         </TouchableOpacity>
       </View>
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
   },
 
   ingredient: {
-    
+   
     height: 300,
     width: '100%',
     justifyContent: 'center',
@@ -150,13 +151,15 @@ const styles = StyleSheet.create({
         width: '90%',
         borderWidth: 2,
         borderColor: 'purple',
-        borderRadius: 50,
+        borderRadius: 10,
         marginTop: 10,
-        padding: 20,
+        paddingHorizontal: 20,
+        // padding: 20,
       },
         ing: {
           flexDirection: 'row',
           justifyContent: 'space-between',
+          
           
         },
 
@@ -206,12 +209,12 @@ const styles = StyleSheet.create({
       boxRec: {
         borderWidth: 2,
         borderColor: 'purple',
-        borderRadius: 50,
+        borderRadius: 10,
         marginBottom: 30,
-        padding: 20,
         height: '90%',
         width: '90%',
-        
+        marginTop: 10,
+        paddingHorizontal: 20,
       },
 
   footer: {
