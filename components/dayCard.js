@@ -6,6 +6,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 // Reducers
 // import { addMeal, deleteMeal } from "../reducers/meal";
 import { setDays } from "../reducers/days";
+import { TouchableOpacity } from "react-native";
 
 export const DayCard = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -52,18 +53,21 @@ export const DayCard = ({ navigation }) => {
   }, [user]);
 
   const handleRemoveMealFromDay = (dayId, mealIndex) => {
-    console.log("handleRemoveMealFromDay", dayId, mealIndex);
+    console.log("dayId, mealIndex", dayId, mealIndex);
+    // console.log("handleRemoveMealFromDay", dayId, mealIndex);
     // dispatch(deleteMeal({ dayId, mealIndex }));
   };
 
-  const renderMeal = (meal, onRemove) => (
-    <View style={styles.meal}>
-      <Text style={styles.mealText}>{meal}</Text>
+  const renderMeal = (meal, mealIndex, onRemove) => (
+    <View style={styles.meal} key={mealIndex}>
+      <TouchableOpacity onPress={() => navigation.navigate("SearchMeal")}>
+        <Text style={styles.mealText}>{meal}</Text>
+      </TouchableOpacity>
       <FontAwesome
         name='trash-o'
         size={24}
         color='red'
-        onPress={handleRemoveMealFromDay}
+        onPress={() => handleRemoveMealFromDay(dayId, mealId)}
       />
     </View>
   );
@@ -75,7 +79,9 @@ export const DayCard = ({ navigation }) => {
       </Text>
       <View style={[styles.mealsContainer, styles.backgroundColor]}>
         {day.meals?.map((meal, i) =>
-          renderMeal(meal.mealName, () => dispatch(deleteMeal(meal.mealId, i)))
+          renderMeal(meal.mealName, i, () =>
+            dispatch(deleteMeal(meal.mealId, i))
+          )
         )}
         {!day.meals && (
           <>
