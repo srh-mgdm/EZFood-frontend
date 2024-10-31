@@ -5,27 +5,6 @@ import { DayCard } from "../components/dayCard";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 
 export default function HomeScreen({ navigation }) {
-<<<<<<< HEAD
-
-
-
-
-    return (
-        <View style={styles.container}>
-            
-            <View style={styles.head}>
-                <Header navigation={navigation}/>
-            </View>
-            
-            <ScrollView contentContainerStyle={styles.main}>
-                <Card navigation={navigation}/>
-            </ScrollView>
-        </View>
-
-    )
-};
-
-=======
   return (
     <View style={styles.container}>
       <View style={styles.head}>
@@ -37,7 +16,6 @@ export default function HomeScreen({ navigation }) {
     </View>
   );
 }
->>>>>>> 4a92a529e04fb31be012c2e47d98ae23f3352d1e
 
 const styles = StyleSheet.create({
   container: {
