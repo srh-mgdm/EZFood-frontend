@@ -37,7 +37,8 @@ useEffect(() => {
 
   const handleSelectMeal = (meal) => {
     
-    dispatch(selectMeal(meal));
+    dispatch(selectMeal(meal._id));
+
     setSearchText(meal.mealName); // fill input with the mealName
 
     // Navigate after updating the input

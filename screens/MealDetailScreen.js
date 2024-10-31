@@ -11,9 +11,9 @@ export default function MealDetailScreen({ navigation: { goBack } , navigation  
   
   const dispatch = useDispatch();
   const meal = useSelector((state) => state.meals.value.selectedMealDetails || []);
-  const mealId = useSelector((state) => state.meals.value.selectedMeal._id || []);
+  const mealId = useSelector((state) => state.meals.value.selectedMeal || []);
   
-  console.log(mealId)
+   console.log(mealId)
   //console.log("Meal =>", meal);
   
  
@@ -24,13 +24,14 @@ export default function MealDetailScreen({ navigation: { goBack } , navigation  
         .then((data) => {
           if (data.result) {
             dispatch(selectMealDetail(data.meal)); //placer dans la valeur dans le reducer selectedMeal
+            console.log('rerender')
           }
         })
         .catch((error) => {
           console.log("Cannot fetch meals :", error);
         });
    
-  }, []);
+  }, [mealId]);
   
   const ingredients = meal.mealIngredients?.map ((data , i) => (
     <View key={i} style={styles.ing}>
@@ -87,6 +88,7 @@ export default function MealDetailScreen({ navigation: { goBack } , navigation  
 
         <View style={styles.footer}>
           <TouchableOpacity style={styles.btn} onPress={() => goBack()} title="Go back from MealDetail">
+                    
                     <Text style={styles.color}>ANNULER</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btn} onPress={() => handleValidate()}>

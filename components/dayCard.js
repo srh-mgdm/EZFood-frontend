@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { StyleSheet, Text, View } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { selectMeal } from '../reducers/meals';
 
 // Reducers
 // import { addMeal, deleteMeal } from "../reducers/meal";
@@ -17,7 +18,7 @@ export const DayCard = ({ navigation }) => {
 
   // State data
   //   const [meal, setMeal] = useState(null);
-  console.log("Days =>", days);
+  // console.log("Days =>", days);
 
   const weekDays = [
     "Lundi",
@@ -42,6 +43,7 @@ export const DayCard = ({ navigation }) => {
         .then((data) => {
           if (data.result) {
             dispatch(setDays(data.days));
+            // console.log(data)
           }
         })
         .catch((error) => {
@@ -57,10 +59,15 @@ export const DayCard = ({ navigation }) => {
     // console.log("handleRemoveMealFromDay", dayId, mealIndex);
     // dispatch(deleteMeal({ dayId, mealIndex }));
   };
-
-  const renderMeal = (meal, mealIndex, onRemove) => (
+  const handleMealDetail = (mealId) => {
+    dispatch(selectMeal(mealId))
+    navigation.navigate("MealDetailScreen")
+  }
+  
+  const renderMeal = (meal, mealIndex, mealId,onRemove) => (
+    
     <View style={styles.meal} key={mealIndex}>
-      <TouchableOpacity onPress={() => navigation.navigate("MealDetailScreen")}>
+      <TouchableOpacity onPress={() => handleMealDetail(mealId)}>
         <Text style={styles.mealText}>{meal}</Text>
       </TouchableOpacity>
       <FontAwesome
@@ -79,7 +86,7 @@ export const DayCard = ({ navigation }) => {
       </Text>
       <View style={[styles.mealsContainer, styles.backgroundColor]}>
         {day.meals?.map((meal, i) =>
-          renderMeal(meal.mealName, i, () =>
+          renderMeal(meal.mealName, i, meal.mealId, () =>
             dispatch(deleteMeal(meal.mealId, i))
           )
         )}
