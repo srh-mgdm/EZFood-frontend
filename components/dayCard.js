@@ -60,7 +60,7 @@ export const DayCard = ({ navigation }) => {
 
   const renderMeal = (meal, mealIndex, onRemove) => (
     <View style={styles.meal} key={mealIndex}>
-      <TouchableOpacity onPress={() => navigation.navigate("SearchMeal")}>
+      <TouchableOpacity onPress={() => navigation.navigate("MealDetailScreen")}>
         <Text style={styles.mealText}>{meal}</Text>
       </TouchableOpacity>
       <FontAwesome

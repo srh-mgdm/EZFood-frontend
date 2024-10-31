@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, Pressable, TouchableOpacity, KeyboardAvoidingView, Platform, ImageBackground, Alert } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMeals, selectMeal } from '../reducers/meals';
+import { setMeals, selectMeal,  } from '../reducers/meals';
 
 
 
@@ -36,6 +36,7 @@ useEffect(() => {
   }, [searchText]);
 
   const handleSelectMeal = (meal) => {
+    
     dispatch(selectMeal(meal));
     setSearchText(meal.mealName); // fill input with the mealName
 
