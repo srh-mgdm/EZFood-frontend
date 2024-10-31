@@ -20,8 +20,17 @@ export default function LoginScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
+  // Regular expression for email validation
+   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
    // Function to handle login or signup
    const handlePress = () => {
+     // Check if email format is valid
+  if (!emailPattern.test(email)) {
+    Alert.alert('Adresse e-mail invalide');
+    return;
+  }
     const url = `${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/users/${isLogin ? 'signin' : 'signup'}`;
 
     fetch(url, {
@@ -138,6 +147,18 @@ export default function LoginScreen({ navigation }) {
             {isLogin ? 'Créer un compte' : 'Connectez-vous'}
           </Text>
         </Text>
+     {/* Line separator with "ou" */}
+     <View style={styles.separatorContainer}>
+     <View style={styles.separatorLine} />
+     <Text style={styles.separatorText}>ou</Text>
+      <View style={styles.separatorLine} />
+      </View>
+
+       {/* Guest login option */}
+
+       <Pressable style={styles.guestButton} onPress={() => navigation.navigate('Home')}>
+       <Text style={styles.buttonText}>Continuez-vous en tant qu'invité</Text>
+       </Pressable>
       </View>
     </KeyboardAvoidingView>
     </ImageBackground>
@@ -209,4 +230,37 @@ const styles = StyleSheet.create({
     color: '#7b4fff',
     fontWeight: 'bold',
   },
+  separatorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    marginVertical: 15,
+  },
+  separatorLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#ccc',
+  },
+  separatorText: {
+    marginHorizontal: 10,
+    fontSize: 14,
+    color: '#555',
+    fontWeight: 'bold',
+  },
+  guestText: {
+    marginTop: 15,
+    fontSize: 14,
+    color: '#555',
+    textAlign: 'center',
+  },
+  guestButton: {
+    width: '100%',
+    padding: 15,
+    backgroundColor: '#7b4fff',
+    alignItems: 'center',
+    borderRadius: 5,
+    marginTop: 10,
+  },
+
+
 });
