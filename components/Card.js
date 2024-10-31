@@ -33,8 +33,6 @@ export const Card = ({ navigation }) => {
     }
   }, [user]);
 
-  const handleDelete = () => {};
-
   const week = [
     "Lundi",
     "Mardi",
