@@ -1,28 +1,3 @@
-// import { createSlice } from '@reduxjs/toolkit';
-
-// const initialState = {
-//   value: [],
-// };
-
-// export const mealSlice = createSlice({
-//   name: 'meal',
-//   initialState,
-//   reducers: {
-//     addMeal: (state, action) => {
-//         state.value = action.payload;
-//     },
-
-//     deleteMeal: (state, action) => {
-//       state.value = action.payload
-//     }
-//   },
-// });
-
-// export const { addMeal , deleteMeal} = mealSlice.actions;
-// export default mealSlice.reducer;
-
-
-
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -34,7 +9,7 @@ const initialState = {
 
 // Creating the meal slice
 export const mealSlice = createSlice({
-  name: 'meal',
+  name: 'meals',
   initialState,
   reducers: {
     // setMeals: updates the meals array in the value state with data fetched from the backend.
