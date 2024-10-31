@@ -22,7 +22,6 @@ export const mealSlice = createSlice({
     // selectMeal: stores the selected meal's details in the value state.
     selectMeal: (state, action) => {
       state.value.selectedMeal = action.payload;
-      console.log("hi:",action.payload);
     },
 
     selectMealDetail: (state, action) => {
