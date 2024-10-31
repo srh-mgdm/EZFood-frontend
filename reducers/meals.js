@@ -16,6 +16,7 @@ export const mealSlice = createSlice({
     // setMeals: updates the meals array in the value state with data fetched from the backend.
     setMeals: (state, action) => {
       state.value.meals = action.payload;
+
     },
 
     // selectMeal: stores the selected meal's details in the value state.

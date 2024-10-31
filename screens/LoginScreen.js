@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable, KeyboardAvoidingView, Platform, ImageBackground } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable, KeyboardAvoidingView, Platform, ImageBackground, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import { login } from '../reducers/user'; // Import the login action from user reducer
@@ -77,6 +77,9 @@ export default function LoginScreen({ navigation }) {
     >
 
       <View style={styles.form}>
+
+          {/* add logo */}
+          <Image source={require('../assets/EZFood.png')} style={styles.logo} />
          {/* Form title changes based on the mode Connection ou register */}
         <Text style={styles.title}>{isLogin ? 'Connexion' : 'Inscription'}</Text>
 
@@ -179,9 +182,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  logo: {
+    width: 300,
+    height: 300,
+    resizeMode: 'contain',
+    marginBottom: -80,
+
+  },
   form: {
     width: '80%',
-    padding: 20,
+    paddingBottom: 30,
+    paddingHorizontal:30,
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: 10,
     alignItems: 'center',
