@@ -34,7 +34,7 @@ const initialState = {
 
 // Creating the meal slice
 export const mealSlice = createSlice({
-  name: 'meal',
+  name: 'meals',
   initialState,
   reducers: {
     // setMeals: updates the meals array in the value state with data fetched from the backend.
