@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, FlatList, Pressable, TouchableOpacity, KeyboardAvoidingView, Platform, ImageBackground, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, FlatList, Pressable, TouchableOpacity, KeyboardAvoidingView, Platform, ImageBackground, Alert, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { setMeals, selectMeal } from '../reducers/meals';
@@ -50,16 +50,23 @@ useEffect(() => {
     if (token) {
       navigation.navigate('CreateMealScreen'); // Allow logged-in users to create a meal
     } else {
-      Alert.alert('You need to be logged in to create a meal');
+      Alert.alert('Vous devez être connecté pour créer un repas');
     }
   };
 
+  const handleGoHome = () => {
+    navigation.navigate('Home');
+  };
 
   return (
-    <ImageBackground source={require('../assets/background2.jpg')} style={styles.background}>
 
+      <View style={styles.background}>
      {/* KeyboardAvoidingView to adjust screen layout when the keyboard is open */}
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+
+      <View style={styles.logoContainer}>
+          <Image source={require('../assets/EZFood.png')} style={styles.logo} />
+        </View>
 
          {/* Search bar container */}
         <View style={styles.searchContainer}>
@@ -88,12 +95,19 @@ useEffect(() => {
           />
         )}
 
+
         {/* Button at the bottom of the screen to create a new meal */}
         <Pressable style={[styles.createButton, { opacity: token ? 1 : 0.5 }]} onPress={handleCreateMeal}>
           <Text style={styles.createButtonText}>Créer un repas</Text>
         </Pressable>
+
+          {/* button for return to page Home */}
+          <Pressable style={styles.homeButton} onPress={handleGoHome}>
+          <Text style={styles.homeButtonText}>Retour à l'accueil</Text>
+        </Pressable>
+
       </KeyboardAvoidingView>
-    </ImageBackground>
+      </View>
   );
 }
 
@@ -101,11 +115,23 @@ const styles = StyleSheet.create({
   background: {
     flex: 1, // Ensures the background image takes up the entire screen
     resizeMode: 'cover', // Adjusts background to cover the entire screen
+    backgroundColor: 'rgb(173, 216, 230)'
   },
   container: {
     flex: 1, // Allows for full screen usage
     paddingHorizontal: 20,
-    paddingTop: 150,
+    paddingTop: 100,
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 0,
+    marginTop:-60,
+  },
+  logo: {
+    width: 300,
+    height: 300,
+    resizeMode: 'contain',
+    marginBottom: -100,
   },
   searchContainer: {
     flexDirection: 'row', // Row layout for search icon and input
@@ -127,17 +153,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#D0D0D0',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // Semi-transparent background
+    backgroundColor: 'rgba(70, 130, 180, 0.6)', // Semi-transparent background
     borderRadius: 5,
     marginVertical: 5, // Margin between items
   },
   resultText: {
-    color: '#fff', // White color for item text
+    color: '#000',
     fontWeight: 'bold',
   },
   noResultText: {
     textAlign: 'center',
-    color: '#fff',
+    color: 'blue',
     fontWeight: 'bold',
     padding: 10,
   },
@@ -147,11 +173,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 10,
     alignItems: 'center',
-    marginVertical: 20, // Vertical margin around the button
+    marginVertical: 10, // Vertical margin around the button
     alignSelf: 'center',
     width: '90%', // Button width
   },
   createButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  homeButton: {
+    backgroundColor: '#7b4fff',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 10,
+    alignSelf: 'center',
+    width: '90%',
+  },
+  homeButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
