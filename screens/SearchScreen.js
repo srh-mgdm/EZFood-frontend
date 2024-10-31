@@ -16,7 +16,7 @@ export default function SearchScreen({ navigation }) {
 
 useEffect(() => {
 
-    if (searchText.length > 2) {
+    if (searchText.length > 4) {
 
       fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/name/${searchText}`)
         .then((response) => response.json())
@@ -81,7 +81,7 @@ useEffect(() => {
         </View>
 
         {/* Display filtered search results below search bar */}
-        {searchText.length > 2 && (
+        {searchText.length > 4 && (
           <FlatList
             data={meals}
             renderItem={({ item }) => (
