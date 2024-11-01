@@ -23,7 +23,7 @@ export default function SearchScreen({ navigation, route }) {
   const token = useSelector((state) => state.user.value.token); // Check if user is logged in (token exists)
   const dispatch = useDispatch();
 
-  console.log("Search screen route params =>", route.params);
+  // console.log("Search screen route params =>", route.params);
 
   useEffect(() => {
     if (searchText.length > 4) {

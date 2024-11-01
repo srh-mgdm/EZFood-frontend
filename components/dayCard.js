@@ -12,7 +12,7 @@ const DayCard = ({ day, navigation }) => {
   const [refresh, setRefresh] = useState(false);
   const userToken = useSelector((state) => state.user.value.token);
 
-  console.log("Day props :");
+  //   console.log("Day props :", day);
 
   const handleRemoveMeal = (dayId, mealPosition) => {
     // Call backend to delete the meal from the database
@@ -42,8 +42,11 @@ const DayCard = ({ day, navigation }) => {
       .catch((error) => console.error("Error deleting meal:", error));
   };
 
-  const handleMealDetail = (meal) => {
+  const handleMealDetail = (meal, mealPosition) => {
     navigation.navigate("MealDetailScreen", {
+      dayId: day._id,
+      mealId: meal.mealId,
+      mealPosition,
       previousScreen: "Home",
     });
     dispatch(selectMeal(meal.mealId));
@@ -57,7 +60,9 @@ const DayCard = ({ day, navigation }) => {
           <View key={mealPosition} style={styles.meal}>
             {meal.mealId ? (
               <>
-                <TouchableOpacity onPress={() => handleMealDetail(meal)}>
+                <TouchableOpacity
+                  onPress={() => handleMealDetail(meal, mealPosition)}
+                >
                   <Text style={styles.mealText}>{meal.mealName}</Text>
                 </TouchableOpacity>
                 <FontAwesome
