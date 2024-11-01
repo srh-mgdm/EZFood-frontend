@@ -12,6 +12,8 @@ const DayCard = ({ day, navigation }) => {
   const [refresh, setRefresh] = useState(false);
   const userToken = useSelector((state) => state.user.value.token);
 
+  console.log("Day props :", day);
+
   const handleRemoveMeal = (dayId, mealPosition) => {
     // Call backend to delete the meal from the database
     // it is done by updating (PUT route) the meals array at the given position
@@ -33,15 +35,9 @@ const DayCard = ({ day, navigation }) => {
           return;
         }
 
-        console.log("Meal removed from day in db:", data);
-        console.log("Meal to remove from redux store:", {
-          dayId,
-          mealPosition,
-        });
-
         // Dispatch action to remove meal from store
         dispatch(deleteMealFromDay({ dayId, mealPosition }));
-        // setRefresh(!refresh); // Trigger a refresh of the screen
+        setRefresh(!refresh); // Trigger a refresh of the screen
       })
       .catch((error) => console.error("Error deleting meal:", error));
   };
@@ -80,7 +76,7 @@ const DayCard = ({ day, navigation }) => {
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate("SearchMeal", {
-                      dayId: day.dayId,
+                      dayId: day._id,
                       mealPosition,
                     })
                   }
@@ -93,7 +89,7 @@ const DayCard = ({ day, navigation }) => {
                   color='#7b4fff'
                   onPress={() =>
                     navigation.navigate("SearchMeal", {
-                      dayId: day.dayId,
+                      dayId: day._id,
                       mealPosition,
                     })
                   }

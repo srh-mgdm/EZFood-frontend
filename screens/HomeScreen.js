@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Header } from "../components/Header";
 import DayCard from "../components/dayCard";
@@ -12,8 +18,7 @@ export default function HomeScreen({ navigation }) {
   const userToken = useSelector((state) => state.user.value.token);
   const days = useSelector((state) => state.days.value || []);
 
-  console.log("Days =>", days);
-  console.log("User Token =>", userToken);
+  console.log("Days in the store =>", days);
 
   // Fetch days when the component mounts
   useEffect(() => {
@@ -28,7 +33,7 @@ export default function HomeScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            console.log("Fetched days:", data.days);
+            // console.log("Fetched days:", data.days);
             dispatch(setDays(data.days));
           }
         })
@@ -39,7 +44,7 @@ export default function HomeScreen({ navigation }) {
       dispatch(
         setDays([
           {
-            dayId: "guestDayTemplate1",
+            _id: "guestDayTemplate1",
             dayName: "Jour 1",
             dayNumber: 1,
             meals: [
@@ -48,7 +53,7 @@ export default function HomeScreen({ navigation }) {
             ],
           },
           {
-            dayId: "guestDayTemplate2",
+            _id: "guestDayTemplate2",
             dayName: "Jour 2",
             dayNumber: 2,
             meals: [
@@ -67,14 +72,19 @@ export default function HomeScreen({ navigation }) {
         <Header navigation={navigation} />
       </View>
       <ScrollView contentContainerStyle={styles.main}>
-        {days.map((day) => (
-          <DayCard
-            key={day.dayId}
-            // dayId={day.dayId}
-            day={day}
-            navigation={navigation}
-          />
-        ))}
+        {Array.isArray(days) && days.length > 0 ? (
+          days.map((day) => (
+            <DayCard key={day._id} day={day} navigation={navigation} />
+          ))
+        ) : (
+          <View style={styles.sampleCard}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("CreateDayScreen")}
+            >
+              <Text style={styles.sampleText}>Create a New Day</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -95,6 +105,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     flexWrap: "wrap",
-    paddingHorizontal: "5%",
+    paddingHorizontal: "2%",
   },
+  sampleCard: {
+    width: "48%",
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    marginVertical: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  sampleText: { fontSize: 18, fontWeight: "600", color: "#333" },
 });
