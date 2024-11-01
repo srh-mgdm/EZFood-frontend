@@ -17,13 +17,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMeals, selectMeal } from "../reducers/meals";
 
 // receiving `navigation` as a prop for navigation functionality
-export default function SearchScreen({ navigation, route }) {
+export default function SearchScreen({ navigation, route }) { // `navigation` is used for navigating between screens, and `route` is used to receive parameters passed to this screen.
+
   const [searchText, setSearchText] = useState(""); // Initialize searchText state for search input text
   const meals = useSelector((state) => state.meals.value.meals); // Access the list of meals(searched from user or guest) from Redux to show in FlatList
   const token = useSelector((state) => state.user.value.token); // Check if user is logged in (token exists)
   const dispatch = useDispatch();
 
-  console.log("Search screen route params =>", route.params);
+  // console.log("Search screen route params =>", route.params);
 
   useEffect(() => {
     if (searchText.length > 4) {

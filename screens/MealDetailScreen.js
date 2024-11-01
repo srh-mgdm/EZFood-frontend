@@ -4,7 +4,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
@@ -13,62 +12,32 @@ import { addMealToDay } from "../reducers/days";
 
 export default function MealDetailScreen({ navigation, route }) {
   const dispatch = useDispatch();
-
-  // Get user token
   const userToken = useSelector((state) => state.user.value.token);
-
-  // const meal = useSelector(
-  //   (state) => state.meals.value.selectedMealDetails || []
-  // );
-  // const mealId = useSelector((state) => state.meals.value.selectedMeal || []);
-
   const [meal, setMeal] = useState({});
-
-  console.log("Meal Detail screen route params =>", route.params);
-
-  const mealId = route.params.mealId;
-  const dayId = route.params.dayId;
-  const mealPosition = route.params.mealPosition;
+  const { mealId, dayId, mealPosition, previousScreen } = route.params;
 
   useEffect(() => {
-    //fetch route meal par mealId
-    fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/${mealId}`) //flatMealId
+    fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/${mealId}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
           setMeal(data.meal);
-          // dispatch(selectMealDetail(data.meal)); //placer dans la valeur dans le reducer selectedMeal
         }
       })
       .catch((error) => {
-        console.log("Cannot fetch meals :", error);
+        console.log("Cannot fetch meal:", error);
       });
   }, [mealId]);
 
   const handleValidate = () => {
-    console.log(
-      "validate with dayId, mealId, mealPosition : ",
-      dayId,
-      mealId,
-      meal.mealName,
-      mealPosition
-    );
-
-    // If user is logged then we add the meal to the day in the database first
     if (userToken) {
-      // Handle adding a meal to the corresponding day
       fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/days/meal`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
-        body: JSON.stringify({
-          dayId: dayId,
-          mealId: mealId,
-          // mealName: meal.mealName,
-          mealPosition: mealPosition,
-        }),
+        body: JSON.stringify({ dayId, mealId, mealPosition }),
       })
         .then((response) => response.json())
         .then((data) => {
@@ -76,8 +45,6 @@ export default function MealDetailScreen({ navigation, route }) {
             console.error("Error updating day with meal:", data.error);
             return;
           }
-          console.log("Meal added to day successfully");
-          // Dispatch action to add meal to store
           dispatch(
             addMealToDay({
               dayId,
@@ -86,92 +53,81 @@ export default function MealDetailScreen({ navigation, route }) {
               mealPosition,
             })
           );
-          // Go back to home screen
           navigation.navigate("Home");
         });
     } else {
-      // If user is not logged in, we just add the meal to the store
-
-      // Dispatch action to add meal to store
       dispatch(
         addMealToDay({ dayId, mealId, mealName: meal.mealName, mealPosition })
       );
-      // Go back to home screen
       navigation.navigate("Home");
     }
   };
 
   const ingredients = meal.mealIngredients?.map((data, i) => (
-    <View key={i} style={styles.ing}>
-      <Text style={styles.list}>
-        {i + 1}. {data.ingredientId.name}
-      </Text>
-      <Text style={styles.qt}>
-        {data.quantity} {data.unit}
-      </Text>
+    <View key={i} style={styles.ingredientItem}>
+      <Text style={styles.ingredientText}>{data.ingredientId.name}</Text>
+      <Text style={styles.quantityText}>{`${data.quantity} ${data.unit}`}</Text>
     </View>
   ));
 
-  const steps = meal.mealPrepSteps?.map((data, j) => (
-    <View key={j} style={styles.az}>
-      <Text style={styles.list}>
-        {" "}
-        {data.stepNumber}. {data.stepDescription}
-      </Text>
-    </View>
+  const steps = meal.mealPrepSteps?.map((data, i) => (
+    <Text key={i} style={styles.stepText}>
+      {`${data.stepNumber}. ${data.stepDescription}`}
+    </Text>
   ));
 
   return (
     <View style={styles.container}>
-      <View style={styles.head}>
-        <ImageBackground
-          source={require("../assets/background2.jpg")}
-          resizeMode='cover'
-          style={styles.image}
-        >
-          <Text style={styles.color}> {meal.mealName} </Text>
-          <FontAwesome
-            name='pencil'
-            size={40}
-            color='white'
-            onPress={() => navigation.navigate("Home")}
-          />
-          {/* Faire la navigation vers la page edit */}
-        </ImageBackground>
+      <View style={styles.header}>
+        <Text style={styles.mealName} numberOfLines={2}>
+          {meal.mealName}
+        </Text>
+        <TouchableOpacity style={styles.editIcon} disabled>
+          <FontAwesome name='pencil' size={25} color='#7b4fff' />
+        </TouchableOpacity>
       </View>
 
-      <View style={styles.ingredient}>
-        <ScrollView style={styles.boxIng}>{ingredients}</ScrollView>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Ingredients</Text>
+        <ScrollView contentContainerStyle={styles.sectionContent}>
+          {ingredients}
+        </ScrollView>
       </View>
 
-      <View style={styles.infos}>
-        <View style={styles.info}>
-          <FontAwesome name='hourglass' size={20} color='white' />
-          <Text style={styles.infoBox}> {meal.mealPrepTime} min </Text>
+      <View style={styles.infoContainer}>
+        <View style={styles.infoItem}>
+          <FontAwesome name='hourglass' size={20} color='#7b4fff' />
+          <Text style={styles.infoText}>{`${meal.mealPrepTime} min`}</Text>
         </View>
-        <View style={styles.info}>
-          <FontAwesome name='spoon' size={20} color='black' />
-          <Text style={styles.infoBox}>
-            {" "}
-            {meal.mealServings}{" "}
-            {meal.mealServings > 1 ? "personnes" : "personne"}{" "}
+        <View style={styles.infoItem}>
+          <FontAwesome name='cutlery' size={20} color='#7b4fff' />
+          <Text style={styles.infoText}>
+            {`${meal.mealServings} ${
+              meal.mealServings > 1 ? "servings" : "serving"
+            }`}
           </Text>
         </View>
       </View>
 
-      <View style={styles.recipe}>
-        <ScrollView style={styles.boxRec}>{steps}</ScrollView>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Preparation Steps</Text>
+        <ScrollView contentContainerStyle={styles.sectionContent}>
+          {steps}
+        </ScrollView>
       </View>
 
       <View style={styles.footer}>
         <TouchableOpacity
-          style={styles.btn}
-          onPress={() => navigation.navigate(route.params.previousScreen)}
+          style={styles.cancelButton}
+          onPress={() => navigation.navigate(previousScreen)}
         >
-          <Text style={styles.color}>ANNULER</Text>
+          <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={() => handleValidate()}>
-          <Text style={styles.color}>VALIDER</Text>
+        <TouchableOpacity
+          style={styles.validateButton}
+          onPress={handleValidate}
+        >
+          <Text style={styles.buttonText}>Validate</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -179,118 +135,105 @@ export default function MealDetailScreen({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-  background: {},
-
-  color: {
-    color: "white",
-    fontSize: 20,
-  },
-
   container: {
     flex: 1,
-    flexDirection: "column",
-    backgroundColor: "lightblue",
+    backgroundColor: "#f0f8ff", // Light background color for uniformity
   },
-
-  head: {
-    height: 100,
-    width: "100%",
+  header: {
+    backgroundColor: "rgb(173, 216, 230)",
+    paddingVertical: 40,
+    paddingHorizontal: 20,
+    paddingTop: 60, // Adjusted for more space from top
+    alignItems: "center",
+    position: "relative",
   },
-
-  image: {
-    height: "100%",
-    width: "100%",
+  mealName: {
+    fontSize: 26,
+    fontWeight: "bold",
+    color: "#7b4fff",
+    textAlign: "center",
+  },
+  editIcon: {
+    position: "absolute",
+    top: 60,
+    right: 20,
+  },
+  section: {
+    marginVertical: 10,
+    paddingHorizontal: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#444",
+    marginBottom: 8,
+  },
+  sectionContent: {
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 15,
+    borderColor: "#e0e0e0", // Border for subtle contrast
+    borderWidth: 1,
+    marginVertical: 10,
+    paddingBottom: 15,
+  },
+  ingredientItem: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-end",
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderColor: "#e6e6e6",
   },
-
-  ingredient: {
-    height: 300,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
+  ingredientText: {
+    fontSize: 16,
+    color: "#333",
+    fontWeight: "500",
   },
-  boxIng: {
-    width: "90%",
-    borderWidth: 2,
-    borderColor: "purple",
-    borderRadius: 10,
-    marginTop: 10,
-    paddingHorizontal: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
-    backgroundColor: "white",
+  quantityText: {
+    fontSize: 16,
+    color: "#333",
+    fontWeight: "500",
   },
-
-  ing: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-
-  list: {
-    fontSize: 20,
-  },
-
-  qt: {
-    fontSize: 20,
-  },
-
-  infos: {
-    height: 70,
-    width: "100%",
+  infoContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
+    backgroundColor: "#f0f8ff", // Matches container background
+    paddingVertical: 15,
+  },
+  infoItem: {
     alignItems: "center",
   },
-  info: {
-    height: 60,
-    width: 120,
-    borderRadius: 30,
-    justifyContent: "space-around",
-    alignItems: "center",
+  infoText: {
+    fontSize: 16,
+    color: "#333",
+    marginTop: 5,
   },
-  infoBox: {
-    borderWidth: 2,
-    borderColor: "white",
-    borderRadius: 10,
-    shadowColor: "#000",
+  stepText: {
+    fontSize: 16,
+    color: "#555",
+    paddingVertical: 8,
+    lineHeight: 22,
   },
-
-  recipe: {
-    height: 300,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  boxRec: {
-    borderWidth: 2,
-    borderColor: "purple",
-    borderRadius: 10,
-    marginBottom: 30,
-    height: "90%",
-    width: "90%",
-    marginTop: 10,
-    paddingHorizontal: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
-    backgroundColor: "white",
-  },
-
   footer: {
     flexDirection: "row",
     justifyContent: "space-around",
+    padding: 20,
   },
-
-  btn: {
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "white",
-    padding: 10,
-    backgroundColor: "purple",
+  cancelButton: {
+    backgroundColor: "rgb(173, 216, 230)",
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+  },
+  validateButton: {
+    backgroundColor: "#7b4fff",
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
