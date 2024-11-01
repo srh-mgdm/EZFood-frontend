@@ -18,7 +18,7 @@ export default function HomeScreen({ navigation }) {
   const userToken = useSelector((state) => state.user.value.token);
   const days = useSelector((state) => state.days.value || []);
 
-  console.log("Days in the store =>", days);
+  //console.log("Days in the store =>", days);
 
   // Fetch days when the component mounts
   useEffect(() => {

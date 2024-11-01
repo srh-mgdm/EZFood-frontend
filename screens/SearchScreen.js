@@ -54,6 +54,7 @@ export default function SearchScreen({ navigation, route }) {
         dayId: route.params.dayId,
         mealId: meal._id,
         mealPosition: route.params.mealPosition,
+        previousScreen: "SearchMeal",
       });
     }, 100); // delay 100ms for update the input
   };

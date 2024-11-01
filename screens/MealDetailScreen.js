@@ -166,8 +166,7 @@ export default function MealDetailScreen({ navigation, route }) {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => navigation.navigate("Home")}
-          title='Go back from MealDetail'
+          onPress={() => navigation.navigate(route.params.previousScreen)}
         >
           <Text style={styles.color}>ANNULER</Text>
         </TouchableOpacity>
