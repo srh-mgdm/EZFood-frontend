@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useDispatch, useuy } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { deleteMealFromDay } from "../reducers/days";
 import { selectMeal } from "../reducers/meals";
@@ -52,11 +52,10 @@ const DayCard = ({ day, navigation }) => {
     //   // mealPosition: mealPosition,
     //   previousScreen: "HomeScreen",
     // })
-    dispatch(selectMeal(meal.mealId))
-    console.log(meal.mealId)
-    console.log(day.dayId)
-    
-  }
+    dispatch(selectMeal(meal.mealId));
+    console.log(meal.mealId);
+    console.log(day.dayId);
+  };
 
   return (
     <View style={styles.dayCard}>
@@ -66,11 +65,7 @@ const DayCard = ({ day, navigation }) => {
           <View key={mealPosition} style={styles.meal}>
             {meal.mealId ? (
               <>
-                <TouchableOpacity
-                  onPress={() =>
-                    handleMealDetail(meal)
-                  }
-                >
+                <TouchableOpacity onPress={() => handleMealDetail(meal)}>
                   <Text style={styles.mealText}>{meal.mealName}</Text>
                 </TouchableOpacity>
                 <FontAwesome
