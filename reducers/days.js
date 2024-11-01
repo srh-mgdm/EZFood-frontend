@@ -17,6 +17,23 @@ export const daysSlice = createSlice({
     deleteDay: (state, action) => {
       state.value = action.payload;
     },
+    addMealToDay: (state, action) => {
+      const { dayId, mealId, mealName, mealPosition } = action.payload;
+      const dayIndex = state.value.findIndex((day) => day._id === dayId);
+
+      // Day not found in state ?
+      if (dayIndex === -1) {
+        return;
+      }
+      const updatedDay = { ...state.value[dayIndex] };
+      const updatedMeals = [...updatedDay.meals];
+      updatedMeals[mealPosition] = { mealId: mealId, mealName: mealName };
+      updatedDay.meals = updatedMeals;
+
+      const updatedDays = [...state.value];
+      updatedDays[dayIndex] = updatedDay;
+      state.value = updatedDays;
+    },
     deleteMealFromDay: (state, action) => {
       const { dayId, mealPosition } = action.payload;
       const dayIndex = state.value.findIndex((day) => day._id === dayId);
@@ -38,7 +55,7 @@ export const daysSlice = createSlice({
   },
 });
 
-export const { addDay, setDays, deleteDay, deleteMealFromDay } =
+export const { addDay, setDays, deleteDay, addMealToDay, deleteMealFromDay } =
   daysSlice.actions;
 
 export default daysSlice.reducer;
