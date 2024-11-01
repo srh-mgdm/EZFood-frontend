@@ -7,13 +7,13 @@ import { setMeals, selectMeal,  } from '../reducers/meals';
 
 
 // receiving `navigation` as a prop for navigation functionality
-export default function SearchScreen({ navigation , route }) {
+export default function SearchScreen({ navigation }) {
   const [searchText, setSearchText] = useState(''); // Initialize searchText state for search input text
   const meals = useSelector((state) => state.meals.value.meals); // Access the list of meals(searched from user or guest) from Redux to show in FlatList
   const token = useSelector((state) => state.user.value.token); // Check if user is logged in (token exists)
   const dispatch = useDispatch();
 
-  console.log(route.params)
+  
 
 
 useEffect(() => {
@@ -43,7 +43,9 @@ useEffect(() => {
 
     // Navigate after updating the input
   setTimeout(() => {
-    navigation.navigate('MealDetailScreen');
+    navigation.navigate('MealDetailScreen',{
+      previousScreen: "SearchMeal",
+    });
   }, 100); // delay 100ms for update the input
 
   };

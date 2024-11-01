@@ -12,7 +12,7 @@ const DayCard = ({ day, navigation }) => {
   const [refresh, setRefresh] = useState(false);
   const userToken = useSelector((state) => state.user.value.token);
 
-  console.log("Day props :", day);
+  console.log("Day props :",);
 
   const handleRemoveMeal = (dayId, mealPosition) => {
     // Call backend to delete the meal from the database
@@ -46,11 +46,11 @@ const DayCard = ({ day, navigation }) => {
       navigation.navigate("MealDetailScreen", {
       // mealId: meal.mealId,
       // mealPosition: mealPosition,
-      previousScreen: "HomeScreen",
+      previousScreen: "Home",
     })
     dispatch(selectMeal(meal.mealId));
-    console.log(meal.mealId);
-    console.log(day.dayId);
+    // console.log(meal.mealId);
+    // console.log(day.dayId);
   };
 
   return (
