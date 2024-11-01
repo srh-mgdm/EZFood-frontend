@@ -11,8 +11,9 @@ const DayCard = ({ day, navigation }) => {
 
   const [refresh, setRefresh] = useState(false);
   const userToken = useSelector((state) => state.user.value.token);
-
-  console.log("Day props :",);
+  
+ const tab = [day._id]
+//console.log("Day props :", tab);
 
   const handleRemoveMeal = (dayId, mealPosition) => {
     // Call backend to delete the meal from the database
