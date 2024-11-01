@@ -44,14 +44,10 @@ const DayCard = ({ day, navigation }) => {
   };
 
   const handleMealDetail = (meal) => {
-      navigation.navigate("MealDetailScreen", {
-      // mealId: meal.mealId,
-      // mealPosition: mealPosition,
+    navigation.navigate("MealDetailScreen", {
       previousScreen: "Home",
-    })
+    });
     dispatch(selectMeal(meal.mealId));
-    // console.log(meal.mealId);
-    // console.log(day.dayId);
   };
 
   return (
@@ -79,6 +75,7 @@ const DayCard = ({ day, navigation }) => {
                     navigation.navigate("SearchMeal", {
                       dayId: day._id,
                       mealPosition,
+                      previousScreen: "Home",
                     })
                   }
                 >
@@ -92,6 +89,7 @@ const DayCard = ({ day, navigation }) => {
                     navigation.navigate("SearchMeal", {
                       dayId: day._id,
                       mealPosition,
+                      previousScreen: "Home",
                     })
                   }
                 />
