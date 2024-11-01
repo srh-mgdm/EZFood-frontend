@@ -47,11 +47,11 @@ const DayCard = ({ day, navigation }) => {
   };
 
   const handleMealDetail = (meal) => {
-    //   navigation.navigate("MealDetailScreen", {
-    //   // mealId: meal.mealId,
-    //   // mealPosition: mealPosition,
-    //   previousScreen: "HomeScreen",
-    // })
+      navigation.navigate("MealDetailScreen", {
+      // mealId: meal.mealId,
+      // mealPosition: mealPosition,
+      previousScreen: "HomeScreen",
+    })
     dispatch(selectMeal(meal.mealId));
     console.log(meal.mealId);
     console.log(day.dayId);
