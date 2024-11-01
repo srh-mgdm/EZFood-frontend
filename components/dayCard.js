@@ -1,9 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useuy } from "react-redux";
 import { useState } from "react";
 import { deleteMealFromDay } from "../reducers/days";
+import { selectMeal } from "../reducers/meals";
 
 const DayCard = ({ day, navigation }) => {
   const dispatch = useDispatch();
@@ -45,6 +46,18 @@ const DayCard = ({ day, navigation }) => {
       .catch((error) => console.error("Error deleting meal:", error));
   };
 
+  const handleMealDetail = (meal) => {
+    //   navigation.navigate("MealDetailScreen", {
+    //   // mealId: meal.mealId,
+    //   // mealPosition: mealPosition,
+    //   previousScreen: "HomeScreen",
+    // })
+    dispatch(selectMeal(meal.mealId))
+    console.log(meal.mealId)
+    console.log(day.dayId)
+    
+  }
+
   return (
     <View style={styles.dayCard}>
       <Text style={styles.dayName}>{day.dayName}</Text>
@@ -55,11 +68,7 @@ const DayCard = ({ day, navigation }) => {
               <>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate("MealDetailScreen", {
-                      mealId: meal.mealId,
-                      mealPosition: mealPosition,
-                      previousScreen: "HomeScreen",
-                    })
+                    handleMealDetail(meal)
                   }
                 >
                   <Text style={styles.mealText}>{meal.mealName}</Text>
