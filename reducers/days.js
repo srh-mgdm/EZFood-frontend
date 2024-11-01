@@ -18,20 +18,22 @@ export const daysSlice = createSlice({
       state.value = action.payload;
     },
     deleteMealFromDay: (state, action) => {
-      //   const { dayId, mealPosition } = action.payload;
-      //   const day = state.value.find((day) => day.dayId === dayId);
-      //   if (day) {
-      //     day.meals[mealPosition] = { mealId: null, mealName: null };
-      //   }
-
       const { dayId, mealPosition } = action.payload;
-      const updatedDay = state.value.find((day) => day.dayId === dayId);
-      if (!updatedDay) {
+      const dayIndex = state.value.findIndex((day) => day._id === dayId);
+
+      // Day not found in state ?
+      if (dayIndex === -1) {
         return;
       }
+
+      const updatedDay = { ...state.value[dayIndex] };
       const updatedMeals = [...updatedDay.meals];
       updatedMeals[mealPosition] = { mealId: null, mealName: null };
-      return { ...day, meals: updatedMeals };
+      updatedDay.meals = updatedMeals;
+
+      const updatedDays = [...state.value];
+      updatedDays[dayIndex] = updatedDay;
+      state.value = updatedDays;
     },
   },
 });
