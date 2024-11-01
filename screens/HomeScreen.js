@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { Header } from "../components/Header";
 import DayCard from "../components/dayCard";
@@ -18,7 +19,23 @@ export default function HomeScreen({ navigation }) {
   const userToken = useSelector((state) => state.user.value.token);
   const days = useSelector((state) => state.days.value || []);
 
-  //console.log("Days in the store =>", days);
+  const mealIds = [];
+
+// Boucle sur chaque jour
+days.forEach(day => {
+  // Boucle sur chaque repas du jour
+  day.meals.forEach(meal => {
+    // Ajoute le mealId au tableau s'il existe 
+    if (meal.mealId) { // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
+      mealIds.push(meal.mealId);
+    }
+  });
+});
+
+
+  //console.log("Days in the store ok=>", days[0]);
+  // days[0].meals[0].mealId
+  // console.log('tablo',tab)
 
   // Fetch days when the component mounts
   useEffect(() => {
@@ -66,10 +83,15 @@ export default function HomeScreen({ navigation }) {
     }
   }, [userToken, dispatch]);
 
+  const handleIngredientsList = () => {
+    navigation.navigate("CreateDayScreen")
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.head}>
         <Header navigation={navigation} />
+        <FontAwesome name='shopping-cart' size={24} color='red' onPress={() => handleIngredientsList()}/>
       </View>
       <ScrollView contentContainerStyle={styles.main}>
         {Array.isArray(days) && days.length > 0 ? (
