@@ -7,13 +7,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 
 
-export default function MealDetailScreen({ navigation: { goBack } , navigation  }) {
+export default function MealDetailScreen({  navigation , route  }) {
   
   const dispatch = useDispatch();
   const meal = useSelector((state) => state.meals.value.selectedMealDetails || []);
   const mealId = useSelector((state) => state.meals.value.selectedMeal || []);
   
-   console.log(mealId)
+  
+  //console.log(mealId)
+   
+
   //console.log("Meal =>", meal);
   
  
@@ -24,7 +27,7 @@ export default function MealDetailScreen({ navigation: { goBack } , navigation  
         .then((data) => {
           if (data.result) {
             dispatch(selectMealDetail(data.meal)); //placer dans la valeur dans le reducer selectedMeal
-            console.log('rerender')
+            
           }
         })
         .catch((error) => {
@@ -87,7 +90,7 @@ export default function MealDetailScreen({ navigation: { goBack } , navigation  
         </View>
 
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.btn} onPress={() => goBack()} title="Go back from MealDetail">
+          <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate(route.params.previousScreen)}>
                     
                     <Text style={styles.color}>ANNULER</Text>
           </TouchableOpacity>
