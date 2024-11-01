@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, FlatList, Pressable, TouchableOpacity, KeyboardAvoidingView, Platform, ImageBackground, Alert, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMeals, selectMeal } from '../reducers/meals';
+import { setMeals, selectMeal,  } from '../reducers/meals';
 
 
 
 // receiving `navigation` as a prop for navigation functionality
-export default function SearchScreen({ navigation }) {
+export default function SearchScreen({ navigation , route }) {
   const [searchText, setSearchText] = useState(''); // Initialize searchText state for search input text
   const meals = useSelector((state) => state.meals.value.meals); // Access the list of meals(searched from user or guest) from Redux to show in FlatList
   const token = useSelector((state) => state.user.value.token); // Check if user is logged in (token exists)
   const dispatch = useDispatch();
+
+  console.log(route.params)
 
 
 useEffect(() => {

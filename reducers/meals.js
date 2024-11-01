@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   value: {
     meals: [], //an array to store all meals fetched from the backend.
-    selectedMeal: null, //an object to store the details of a selected meal.
-    selectedMealDetails: null,
+    selectedMeal: null, //an object to store the name and id of a selected meal.
+    selectedMealDetails: null, //an object to store the details of a selected meal.
   },
 };
 
@@ -25,8 +25,8 @@ export const mealSlice = createSlice({
     },
 
     selectMealDetail: (state, action) => {
-        state.value.selectedMealDetails = action.payload;
-      },
+      state.value.selectedMealDetails = action.payload;
+    },
 
     // clearSelectedMeal: clears the selectedMeal in the value state, setting it back to null.
     clearSelectedMeal: (state) => {
@@ -36,7 +36,7 @@ export const mealSlice = createSlice({
 });
 
 // Exporting actions so they can be used in other components
-export const { setMeals, selectMeal, clearSelectedMeal, selectMealDetail } = mealSlice.actions;
+export const { setMeals, selectMeal, selectMealDetail, clearSelectedMeal } = mealSlice.actions;
 
 // Exporting the reducer to be used in the Redux store
 export default mealSlice.reducer;
