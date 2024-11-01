@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SearchScreen from "./screens/SearchScreen";
+import IngredientsScreen from "./screens/IngredientsScreen";
 import MealDetailScreen from "./screens/MealDetailScreen";
 import MealActionScreen from "./screens/MealActionScreen";
 import { Provider } from "react-redux";
@@ -30,6 +31,7 @@ export default function App() {
           <Stack.Screen name="MealDetailScreen" component={MealDetailScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="MealAction" component={MealActionScreen} />
+          <Stack.Screen name="Ingredients" component={IngredientsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

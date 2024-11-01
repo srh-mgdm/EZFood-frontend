@@ -19,18 +19,7 @@ export default function HomeScreen({ navigation }) {
   const userToken = useSelector((state) => state.user.value.token);
   const days = useSelector((state) => state.days.value || []);
 
-  const mealIds = [];
 
-// Boucle sur chaque jour
-days.forEach(day => {
-  // Boucle sur chaque repas du jour
-  day.meals.forEach(meal => {
-    // Ajoute le mealId au tableau s'il existe 
-    if (meal.mealId) { // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
-      mealIds.push(meal.mealId);
-    }
-  });
-});
 
 
   //console.log("Days in the store ok=>", days[0]);
@@ -84,14 +73,28 @@ days.forEach(day => {
   }, [userToken, dispatch]);
 
   const handleIngredientsList = () => {
-    navigation.navigate("CreateDayScreen")
+    const mealIds = [];
+    // Boucle sur chaque jour
+    days.forEach(day => {
+      // Boucle sur chaque repas du jour
+      day.meals.forEach(meal => {
+        // Ajoute le mealId au tableau s'il existe 
+        if (meal.mealId) { // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
+          mealIds.push(meal.mealId);
+        }
+      });
+    });
+    navigation.navigate("Ingredients" , {
+      mealIds
+    })
+    console.log('hello')
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.head}>
         <Header navigation={navigation} />
-        <FontAwesome name='shopping-cart' size={24} color='red' onPress={() => handleIngredientsList()}/>
+       
       </View>
       <ScrollView contentContainerStyle={styles.main}>
         {Array.isArray(days) && days.length > 0 ? (
@@ -107,6 +110,7 @@ days.forEach(day => {
             </TouchableOpacity>
           </View>
         )}
+         <FontAwesome name='shopping-cart' size={24} color='red' onPress={() => handleIngredientsList()}/>
       </ScrollView>
     </View>
   );
