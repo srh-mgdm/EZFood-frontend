@@ -6,6 +6,7 @@ import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import SearchScreen from "./screens/SearchScreen";
 import MealDetailScreen from "./screens/MealDetailScreen";
+import MealActionScreen from "./screens/MealActionScreen";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
@@ -24,6 +25,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="MealAction" component={MealActionScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="SearchMeal" component={SearchScreen} />
           <Stack.Screen name="MealDetailScreen" component={MealDetailScreen} />
