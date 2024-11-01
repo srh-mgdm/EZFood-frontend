@@ -8,7 +8,7 @@ export const daysSlice = createSlice({
   name: "days",
   initialState,
   reducers: {
-    addDay: (state, action) => {
+    agitddDay: (state, action) => {
       state.value.push = action.payload;
     },
     setDays: (state, action) => {
