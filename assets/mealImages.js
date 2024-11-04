@@ -15,7 +15,7 @@ export const images = {
     "Filet_de_Cabillaud_avec_Legumes.jpg": { uri: "https://res.cloudinary.com/dr5mo6tor/image/upload/v1730715668/filet_de_Cabillaud_avec_Legumes_u8hdqb.jpg"},
     "Pave_de_Saumon_Grille.jpg": { uri :"https://res.cloudinary.com/dr5mo6tor/image/upload/v1730715668/pave_de_Saumon_Grille_vklce2.jpg"},
     "default_image.png": { uri: "https://res.cloudinary.com/dr5mo6tor/image/upload/v1730715667/default_image_htwtfq.png"},
-
+    "Pâtes_Carbonara.jpg": { uri: "https://res.cloudinary.com/dr5mo6tor/image/upload/v1730737122/P%C3%A2tes_Carbonara_urzt8m.jpg"},
   };
 
 // Default export for convenience
