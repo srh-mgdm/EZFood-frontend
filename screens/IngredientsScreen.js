@@ -12,7 +12,7 @@ export default function IngredientsScreen({ navigation, route }) {
         const fetchPromises = route.params.mealIds.map(async (mealId) => {
           const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/${mealId}`);
           const data = await response.json();
-          
+          console.log(data.meal)
           data.meal.mealIngredients.forEach((mealIngredient) => {
             allIngredients.push({
               name: mealIngredient.ingredientId.name,
