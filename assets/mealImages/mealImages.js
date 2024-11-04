@@ -2,7 +2,7 @@
 export const images = {
     "Pates_au_saumon.jpg": require("./pates_au_saumon.jpg"),
     "Riz_complet_et_cabillaud.jpg": require("./riz_complet_et_cabillaud.jpg"),
-    "poulet_aux_cacahuetes_et_riz.jpg": require("./poulet_aux_cacahuetes_et_riz.jpg"),
+    "Poulet_aux_cacahuetes_et_riz.jpg": require("./poulet_aux_cacahuetes_et_riz.jpg"),
     "Pizza_Regina.jpg": require("./pizza_Regina.jpg"),
     "Pizza_Chevre_Miel.jpg": require("./pizza_Chevre_Miel.jpg"),
     "Crepe_au_Nutella.jpg": require("./Crepe_au_Nutella.jpg"),
