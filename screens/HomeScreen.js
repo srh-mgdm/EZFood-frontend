@@ -84,7 +84,9 @@ export default function HomeScreen({ navigation }) {
         }
       });
     });
-    navigation.navigate("Ingredients" )
+    navigation.navigate("Ingredients" , {
+      //azerty
+    })
     console.log('hello')
   }
 
@@ -92,7 +94,7 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.head}>
         <Header navigation={navigation} />
-        
+       
       </View>
       <ScrollView contentContainerStyle={styles.main}>
         {Array.isArray(days) && days.length > 0 ? (
