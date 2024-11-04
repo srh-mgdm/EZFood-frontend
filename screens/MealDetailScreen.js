@@ -121,7 +121,14 @@ export default function MealDetailScreen({ navigation, route }) {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.cancelButton}
-          onPress={() => navigation.navigate(previousScreen)}
+          onPress={() =>
+            navigation.navigate(previousScreen, {
+              dayId: dayId,
+              mealId: mealId,
+              mealPosition: mealPosition,
+              previousScreen: "MealDetailScreen",
+            })
+          }
         >
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
