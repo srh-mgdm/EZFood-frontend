@@ -44,26 +44,27 @@ export default function HomeScreen({ navigation }) {
       // No user token,
       console.log("User not authenticated / guest user");
       dispatch(
-        setDays([
-          {
-            _id: "guestDayTemplate1",
-            dayName: "Jour 1",
-            dayNumber: 1,
-            meals: [
-              { mealId: null, mealName: null },
-              { mealId: null, mealName: null },
-            ],
-          },
-          {
-            _id: "guestDayTemplate2",
-            dayName: "Jour 2",
-            dayNumber: 2,
-            meals: [
-              { mealId: null, mealName: null },
-              { mealId: null, mealName: null },
-            ],
-          },
-        ])
+        setDays([])
+        // setDays([
+        //   {
+        //     _id: "guestDayTemplate1",
+        //     dayName: "Jour 1",
+        //     dayNumber: 1,
+        //     meals: [
+        //       { mealId: null, mealName: null },
+        //       { mealId: null, mealName: null },
+        //     ],
+        //   },
+        //   {
+        //     _id: "guestDayTemplate2",
+        //     dayName: "Jour 2",
+        //     dayNumber: 2,
+        //     meals: [
+        //       { mealId: null, mealName: null },
+        //       { mealId: null, mealName: null },
+        //     ],
+        //   },
+        // ])
       );
     }
   }, [userToken, dispatch]);
@@ -207,10 +208,11 @@ const styles = StyleSheet.create({
   },
   sampleCard: {
     width: "48%",
+    height: 200,
     backgroundColor: "#fff",
     borderRadius: 10,
-    padding: 20,
-    marginVertical: 20,
+    padding: 10,
+    marginVertical: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,

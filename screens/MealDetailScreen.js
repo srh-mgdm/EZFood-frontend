@@ -6,9 +6,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addMealToDay } from "../reducers/days";
+
+const { height } = Dimensions.get("window");
 
 export default function MealDetailScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -77,7 +80,6 @@ export default function MealDetailScreen({ navigation, route }) {
       {`${data.stepNumber}. ${data.stepDescription}`}
     </Text>
   ));
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -90,8 +92,11 @@ export default function MealDetailScreen({ navigation, route }) {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Ingredients</Text>
-        <ScrollView contentContainerStyle={styles.sectionContent}>
+        <Text style={styles.sectionTitle}>Ingrédients</Text>
+        <ScrollView
+          contentContainerStyle={styles.ingredientsContent}
+          style={styles.ingredientsContainer}
+        >
           {ingredients}
         </ScrollView>
       </View>
@@ -112,15 +117,18 @@ export default function MealDetailScreen({ navigation, route }) {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Preparation Steps</Text>
-        <ScrollView contentContainerStyle={styles.sectionContent}>
+        <Text style={styles.sectionTitle}>Préparation</Text>
+        <ScrollView
+          contentContainerStyle={styles.stepsContent}
+          style={styles.stepsContainer}
+        >
           {steps}
         </ScrollView>
       </View>
 
-      <View style={styles.footer}>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.cancelButton}
+          style={styles.actionButton}
           onPress={() =>
             navigation.navigate(previousScreen, {
               dayId: dayId,
@@ -130,13 +138,10 @@ export default function MealDetailScreen({ navigation, route }) {
             })
           }
         >
-          <Text style={styles.buttonText}>Cancel</Text>
+          <Text style={styles.buttonText}>Retour</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.validateButton}
-          onPress={handleValidate}
-        >
-          <Text style={styles.buttonText}>Validate</Text>
+        <TouchableOpacity style={styles.actionButton} onPress={handleValidate}>
+          <Text style={styles.buttonText}>Valider</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -146,13 +151,13 @@ export default function MealDetailScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f8ff", // Light background color for uniformity
+    backgroundColor: "#f0f8ff",
   },
   header: {
     backgroundColor: "rgb(173, 216, 230)",
     paddingVertical: 40,
     paddingHorizontal: 20,
-    paddingTop: 60, // Adjusted for more space from top
+    paddingTop: 60,
     alignItems: "center",
     position: "relative",
   },
@@ -177,14 +182,14 @@ const styles = StyleSheet.create({
     color: "#444",
     marginBottom: 8,
   },
-  sectionContent: {
+  ingredientsContainer: {
+    maxHeight: height * 0.35, // Reduced to show less height
+    borderRadius: 12,
+  },
+  ingredientsContent: {
+    padding: 10,
     backgroundColor: "#fff",
     borderRadius: 12,
-    padding: 15,
-    borderColor: "#e0e0e0", // Border for subtle contrast
-    borderWidth: 1,
-    marginVertical: 10,
-    paddingBottom: 15,
   },
   ingredientItem: {
     flexDirection: "row",
@@ -206,16 +211,25 @@ const styles = StyleSheet.create({
   infoContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "#f0f8ff", // Matches container background
-    paddingVertical: 15,
+    paddingVertical: 10,
   },
   infoItem: {
     alignItems: "center",
+    flexDirection: "row",
   },
   infoText: {
     fontSize: 16,
     color: "#333",
-    marginTop: 5,
+    marginLeft: 5,
+  },
+  stepsContainer: {
+    maxHeight: height * 0.35, // Limited height for visibility
+    backgroundColor: "#f7f7f7", // Different background color
+    borderRadius: 12,
+  },
+  stepsContent: {
+    padding: 15,
+    paddingBottom: 80, // Space for buttons
   },
   stepText: {
     fontSize: 16,
@@ -223,26 +237,28 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     lineHeight: 22,
   },
-  footer: {
+  buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 20,
+    justifyContent: "space-between",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#f0f8ff",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
   },
-  cancelButton: {
-    backgroundColor: "rgb(173, 216, 230)",
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-  },
-  validateButton: {
+  actionButton: {
+    flex: 1,
+    marginHorizontal: 5,
     backgroundColor: "#7b4fff",
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
+    borderRadius: 10,
+    alignItems: "center",
+    paddingVertical: 15,
   },
   buttonText: {
-    color: "white",
+    color: "#fff",
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "bold",
   },
 });
