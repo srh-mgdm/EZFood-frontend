@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { Header } from "../components/Header";
@@ -19,12 +20,7 @@ export default function HomeScreen({ navigation }) {
   const userToken = useSelector((state) => state.user.value.token);
   const days = useSelector((state) => state.days.value || []);
 
-
-
-
   //console.log("Days in the store ok=>", days[0]);
-  // days[0].meals[0].mealId
-  // console.log('tablo',tab)
 
   // Fetch days when the component mounts
   useEffect(() => {
@@ -72,46 +68,119 @@ export default function HomeScreen({ navigation }) {
     }
   }, [userToken, dispatch]);
 
+  const handleAddDay = () => {
+    const newDay = {
+      dayNumber: parseInt(days.length) + 1,
+      dayName: "Jour " + parseInt(days.length + 1),
+      mealsId: [null, null],
+    };
+
+    if (userToken) {
+      fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/days`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newDay),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            console.log("New day created:", data.day);
+            dispatch(
+              setDays([
+                ...days,
+                {
+                  _id: data.day._id, // We just got that from the database
+                  dayName: data.day.dayName,
+                  dayNumber: data.day.dayNumber,
+                  meals: [
+                    { mealId: null, mealName: null },
+                    { mealId: null, mealName: null },
+                  ],
+                },
+              ])
+            );
+          }
+        })
+        .catch((error) => console.error("Cannot add new day:", error));
+    } else {
+      // update only redux store when there is no token (guest mode)
+      dispatch(
+        setDays([
+          ...days,
+          {
+            _id: Number(days.length) + 1, // We just got that from the database
+            dayNumber: parseInt(days.length) + 1,
+            dayName: "Jour " + parseInt(days.length + 1),
+            meals: [
+              { mealId: null, mealName: null },
+              { mealId: null, mealName: null },
+            ],
+          },
+        ])
+      );
+    }
+  };
+
   const handleIngredientsList = () => {
     const mealIds = [];
     // Boucle sur chaque jour
-    days.forEach(day => {
+    days.forEach((day) => {
       // Boucle sur chaque repas du jour
-      day.meals.forEach(meal => {
-        // Ajoute le mealId au tableau s'il existe 
-        if (meal.mealId) { // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
+      day.meals.forEach((meal) => {
+        // Ajoute le mealId au tableau s'il existe
+        if (meal.mealId) {
+          // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
           mealIds.push(meal.mealId);
         }
       });
     });
-    navigation.navigate("Ingredients" , {
-      mealIds
-    })
-    console.log('hello')
-  }
+    navigation.navigate("Ingredients", {
+      mealIds,
+    });
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.head}>
         <Header navigation={navigation} />
-        <FontAwesome name='shopping-cart' size={24} color='red' onPress={() => handleIngredientsList()}/>
       </View>
-      <ScrollView contentContainerStyle={styles.main}>
-        {Array.isArray(days) && days.length > 0 ? (
+
+      <ScrollView contentContainerStyle={styles.main} style={styles.scrollView}>
+        {Array.isArray(days) &&
+          days.length > 0 &&
           days.map((day) => (
             <DayCard key={day._id} day={day} navigation={navigation} />
-          ))
-        ) : (
-          <View style={styles.sampleCard}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("CreateDayScreen")}
-            >
-              <Text style={styles.sampleText}>Create a New Day</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-         <FontAwesome name='shopping-cart' size={24} color='red' onPress={() => handleIngredientsList()}/>
+          ))}
+
+        {/* Always a "new day" card at the end of the list */}
+        <View style={styles.sampleCard}>
+          <TouchableOpacity onPress={() => handleAddDay()}>
+            <Text style={styles.sampleText}>Ajouter une journée</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
+
+      {/* gradient for smooth fade over the days */}
+      <LinearGradient
+        colors={["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]}
+        style={styles.gradientOverlay}
+      />
+
+      {/* action buttons at the bottom of the screen */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleIngredientsList()}
+        >
+          <Text style={styles.buttonText}>Liste de courses</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionButton}>
+          <Text style={styles.buttonText}>Proposer des repas</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -127,11 +196,14 @@ const styles = StyleSheet.create({
   },
   main: {
     flexGrow: 5,
-    // paddingBottom: 10,
+    paddingBottom: 100,
     flexDirection: "row",
     justifyContent: "space-between",
     flexWrap: "wrap",
     paddingHorizontal: "2%",
+  },
+  scrollView: {
+    paddingBottom: 100,
   },
   sampleCard: {
     width: "48%",
@@ -148,4 +220,35 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   sampleText: { fontSize: 18, fontWeight: "600", color: "#333" },
+  gradientOverlay: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 60,
+    height: 80,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#FFF",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+  },
+  actionButton: {
+    flex: 1,
+    marginHorizontal: 5,
+    backgroundColor: "#7b4fff",
+    borderRadius: 10,
+    alignItems: "center",
+    paddingVertical: 15,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 });
