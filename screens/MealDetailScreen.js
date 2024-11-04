@@ -6,9 +6,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Image,
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addMealToDay } from "../reducers/days";
+import images from "../assets/mealImages"; // Import images from Cloudinary file
 
 export default function MealDetailScreen({ navigation, route }) {
   const dispatch = useDispatch();
@@ -81,12 +84,20 @@ export default function MealDetailScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.mealName} numberOfLines={2}>
-          {meal.mealName}
-        </Text>
-        <TouchableOpacity style={styles.editIcon} disabled>
-          <FontAwesome name='pencil' size={25} color='#7b4fff' />
+      <Image
+          source={images[meal.mealImage] || images["default_image.png"]}
+          style={styles.mealImage}
+          resizeMode="cover"
+        />
+         <View style={styles.mealNameContainer}>
+          <Text style={styles.mealName} numberOfLines={1}>
+            {meal.mealName}
+          </Text>
+          <TouchableOpacity style={styles.editIcon} onPress={() => Alert.alert("Fonctionnalité en développement")}>
+          <FontAwesome name='pencil' size={20} color='#1A237E' />
         </TouchableOpacity>
+        </View>
+
       </View>
 
       <View style={styles.section}>
@@ -150,22 +161,41 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "rgb(173, 216, 230)",
-    paddingVertical: 40,
-    paddingHorizontal: 20,
+    paddingVertical: 0,
+    paddingHorizontal: 0,
     paddingTop: 60, // Adjusted for more space from top
     alignItems: "center",
     position: "relative",
   },
+  mealImage: {
+    width: "100%",
+    height: 100,
+    borderRadius: 10,
+    marginBottom: 0,
+  },
+  mealNameContainer: {
+    position: "absolute",
+    bottom: 5,
+    left: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 5,
+    flexDirection: "row",
+     alignItems: "center"
+  },
   mealName: {
-    fontSize: 26,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#7b4fff",
     textAlign: "center",
+    marginRight: 5,
   },
   editIcon: {
-    position: "absolute",
-    top: 60,
-    right: 20,
+    // position: "absolute",
+    // top: 60,
+    // right: 20,
+    marginLeft: 15,
   },
   section: {
     marginVertical: 10,
