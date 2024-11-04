@@ -1,36 +1,47 @@
 import { Button, StyleSheet, Text, View, ScrollView } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Header } from '../components/Header';
 
-export default function IngredientsScreen({ navigation, route }) {
+export default function IngredientsScreen({ navigation }) {
   const [ingredients, setIngredients] = useState([]);
+  const days = useSelector((state) => state.days.value || []);
+  
 
+  
   useEffect(() => {
-    const fetchIngredients = async () => {
-      try {
-        const allIngredients = [];
-        const fetchPromises = route.params.mealIds.map(async (mealId) => {
-          const response = await fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/${mealId}`);
-          const data = await response.json();
-          console.log(data.meal)
-          data.meal.mealIngredients.forEach((mealIngredient) => {
-            allIngredients.push({
-              name: mealIngredient.ingredientId.name,
-              qt: mealIngredient.ingredientId.servings[0].quantity,
-              unitType: mealIngredient.ingredientId.servings[0].unit,
-            });
-          });
-        });
-        
-        await Promise.all(fetchPromises);
-        setIngredients(allIngredients); // Mise à jour de l'état avec tous les ingrédients récupérés
-      } catch (error) {
-        console.error('Erreur lors de la récupération des ingrédients:', error);
-      }
-    };
+    mealIds = []
+    meals = []
+    days.forEach(e => { meals.push(e.meals)
+    });
 
-    fetchIngredients();
-  }, [route.params.mealIds]);
+    const collectedMealIds = meals.flatMap(dayMeals => 
+      dayMeals.map(meal => meal.mealId)
+    );
+   // console.log('Collected meal IDs:', collectedMealIds , 'Number of meals:',collectedMealIds.length);
+
+   fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/ingredientslist`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ mealIds: collectedMealIds }) 
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.result) {
+        
+       setIngredients(data.shoppingList)
+      }
+      
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error);
+    });
+}, [days]);
+  
+       
+ 
 
   const content = ingredients.map((data, i) => (
     <View key={i} style={styles.card}>
@@ -57,6 +68,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'lightblue',
+    marginTop: "10%", // safe area
   },
   head: {
     height: 50,

@@ -72,23 +72,21 @@ export default function HomeScreen({ navigation }) {
     }
   }, [userToken, dispatch]);
 
-  const handleIngredientsList = () => {
-    const mealIds = [];
-    // Boucle sur chaque jour
-    days.forEach(day => {
-      // Boucle sur chaque repas du jour
-      day.meals.forEach(meal => {
-        // Ajoute le mealId au tableau s'il existe 
-        if (meal.mealId) { // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
-          mealIds.push(meal.mealId);
-        }
-      });
-    });
-    navigation.navigate("Ingredients" , {
-      //azerty
-    })
-    console.log('hello')
-  }
+  // const handleIngredientsList = () => {
+  //   const mealIds = [];
+  //   // Boucle sur chaque jour
+  //   days.forEach(day => {
+  //     // Boucle sur chaque repas du jour
+  //     day.meals.forEach(meal => {
+  //       // Ajoute le mealId au tableau s'il existe 
+  //       if (meal.mealId) { // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
+  //         mealIds.push(meal.mealId);
+  //       }
+  //     });
+  //   });
+  //   navigation.navigate("Ingredients")
+    
+  // }
 
   return (
     <View style={styles.container}>
@@ -110,7 +108,7 @@ export default function HomeScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         )}
-         <FontAwesome name='shopping-cart' size={24} color='red' onPress={() => handleIngredientsList()}/>
+         
       </ScrollView>
     </View>
   );
