@@ -66,7 +66,9 @@ export default function MealDetailScreen({ navigation, route }) {
   const ingredients = meal.mealIngredients?.map((data, i) => (
     <View key={i} style={styles.ingredientItem}>
       <Text style={styles.ingredientText}>{data.ingredientId.name}</Text>
-      <Text style={styles.quantityText}>{`${data.quantity} ${data.unit}`}</Text>
+      <Text style={styles.quantityText}>{`${data.quantity} ${
+        data.unit ? data.unit : ""
+      }`}</Text>
     </View>
   ));
 
@@ -103,7 +105,7 @@ export default function MealDetailScreen({ navigation, route }) {
           <FontAwesome name='cutlery' size={20} color='#7b4fff' />
           <Text style={styles.infoText}>
             {`${meal.mealServings} ${
-              meal.mealServings > 1 ? "servings" : "serving"
+              meal.mealServings > 1 ? "couverts" : "couvert"
             }`}
           </Text>
         </View>
@@ -119,7 +121,14 @@ export default function MealDetailScreen({ navigation, route }) {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.cancelButton}
-          onPress={() => navigation.navigate(previousScreen)}
+          onPress={() =>
+            navigation.navigate(previousScreen, {
+              dayId: dayId,
+              mealId: mealId,
+              mealPosition: mealPosition,
+              previousScreen: "MealDetailScreen",
+            })
+          }
         >
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
