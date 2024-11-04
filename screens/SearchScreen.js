@@ -113,7 +113,7 @@ export default function SearchScreen({ navigation, route }) {
                     <Image
                       source={
                         images[item.mealImage] ||
-                        require("../assets/mealImages/default_image.png")
+                        require("../assets/default_image.png")
                       }
                       style={styles.mealImage}
                     />
