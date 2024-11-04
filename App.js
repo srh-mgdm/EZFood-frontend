@@ -26,11 +26,12 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="MealAction" component={MealActionScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="SearchMeal" component={SearchScreen} />
           <Stack.Screen name="MealDetailScreen" component={MealDetailScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="MealAction" component={MealActionScreen} />
+          {/* <Stack.Screen name="MealAction" component={MealActionScreen} /> */}
           <Stack.Screen name="Ingredients" component={IngredientsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
