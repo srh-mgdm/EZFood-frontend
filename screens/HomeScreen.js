@@ -94,7 +94,7 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.head}>
         <Header navigation={navigation} />
-       
+        <FontAwesome name='shopping-cart' size={24} color='red' onPress={() => handleIngredientsList()}/>
       </View>
       <ScrollView contentContainerStyle={styles.main}>
         {Array.isArray(days) && days.length > 0 ? (
