@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
-import images from "../assets/mealImages/mealImages"; // Import images from separate module
+import images from "../assets/mealImages"; // Import images from separate module
 
 // receiving `navigation` as a prop for navigation functionality
 export default function SearchScreen({ navigation, route }) {
@@ -61,7 +61,8 @@ export default function SearchScreen({ navigation, route }) {
 
   const handleCreateMeal = () => {
     if (token) {
-      navigation.navigate("CreateMealScreen"); // Allow logged-in users to create a meal
+    //   navigation.navigate("CreateMealScreen"); // Allow logged-in users to create a meal
+      Alert.alert("Fonctionnalité en développement");
     } else {
       Alert.alert("Vous devez être connecté pour créer un repas");
     }
@@ -129,17 +130,22 @@ export default function SearchScreen({ navigation, route }) {
         )}
 
         {/* Button at the bottom of the screen to create a new meal */}
+        <View style={styles.buttonContainer}>
         <Pressable
-          style={[styles.createButton, { opacity: token ? 1 : 0.5 }]}
-          onPress={handleCreateMeal}
-        >
-          <Text style={styles.createButtonText}>Créer un repas</Text>
-        </Pressable>
+            style={[
+              styles.createButton,
+              { backgroundColor: token ? "#7b4fff" : "#A9A9A9" },
+            ]}A9A9A9
+            onPress={handleCreateMeal}
+          >
+            <Text style={styles.createButtonText}>Créer un repas</Text>
+          </Pressable>
 
-        {/* button for return to page Home */}
-        <Pressable style={styles.homeButton} onPress={handleGoHome}>
-          <Text style={styles.homeButtonText}>Retour à l'accueil</Text>
-        </Pressable>
+          <Pressable style={styles.homeButton} onPress={handleGoHome}>
+            <Text style={styles.homeButtonText}>Retour à l'accueil</Text>
+          </Pressable>
+        </View>
+
       </KeyboardAvoidingView>
     </View>
   );
@@ -201,15 +207,23 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     padding: 10,
   },
+ buttonContainer: {
+    flexDirection: "row", // put bottoms in a row
+    justifyContent: "space-between",
+    padding: 20,
+    // position: "absolute", // fixe the button positions in the bottom
+    bottom: 10,
+    left: 0,
+    right: 0,
+    // backgroundColor: "rgb(173, 216, 230)",
+  },
   createButton: {
     backgroundColor: "#7b4fff",
-    paddingVertical: 15,
+    paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
+    width: "45%",
     alignItems: "center",
-    marginVertical: 10, // Vertical margin around the button
-    alignSelf: "center",
-    width: "90%", // Button width
   },
   createButtonText: {
     color: "#fff",
@@ -218,14 +232,11 @@ const styles = StyleSheet.create({
   },
   homeButton: {
     backgroundColor: "#7b4fff",
-    paddingVertical: 15,
-    paddingHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 0,
     borderRadius: 10,
+    width: "45%",
     alignItems: "center",
-    marginTop: 10,
-    alignSelf: "center",
-    width: "90%",
-    marginBottom: 20,
   },
   homeButtonText: {
     color: "#fff",
