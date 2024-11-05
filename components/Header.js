@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../reducers/user";
@@ -30,10 +30,10 @@ export const Header = ({ navigation }) => {
 
   return (
     <View style={[styles.header, styles.background]}>
-      <Text style={[styles.textHead, styles.foregroundColor]}>EZ FOOD</Text>
-      
+        <Image source={require("../assets/EZFood_2.png")} style={styles.logo} />
+
       <View style={styles.rightSide}>
-      <FontAwesome name='shopping-cart' size={24} color='white' onPress={() => navigation.navigate("Ingredients") }/>
+        {/* <FontAwesome name='shopping-cart' size={24} color='white' onPress={() => navigation.navigate("Ingredients") }/> */}
         <Text style={[styles.foregroundColor, styles.userName]}>
           {user || "Invité"}
         </Text>
@@ -44,15 +44,23 @@ export const Header = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  background: {
-    backgroundColor: "#7b4fff",
-  },
+    background: {
+        backgroundColor: "#8a6fff",
+        borderRadius: 20, // Full corner radius for all sides
+        marginTop: 5, // Space from the top
+        shadowColor: "#000", // Shadow color
+        shadowOffset: { width: 0, height: 4 }, // Slightly offset for shadow all around
+        shadowOpacity: 0.3, // Shadow opacity
+        shadowRadius: 6, // Shadow blur radius
+        elevation: 10, // Elevation for Android
+
+      },
   foregroundColor: {
     color: "white",
   },
   header: {
     width: "100%",
-    height: "100%",
+    height: 85,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -66,8 +74,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingRight: 10,
   },
-  textHead: {
-    fontSize: 20,
-    fontWeight: "bold",
+  logo: {
+    width: 300, // Adjust the width of the logo
+    height: 150,  // Adjust the height of the logo
+    resizeMode: "contain",
+    marginLeft: -120,
+    marginTop: 30,
   },
 });

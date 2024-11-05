@@ -1,52 +1,19 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { deleteMealFromDay } from "../reducers/days";
+import { useDispatch } from "react-redux";
 import { selectMeal } from "../reducers/meals";
+import images from "../assets/mealImages";
 
 const DayCard = ({ day, navigation }) => {
   const dispatch = useDispatch();
 
-  const [refresh, setRefresh] = useState(false);
-  const userToken = useSelector((state) => state.user.value.token);
-
-  //   console.log("Day props :", day);
-
-  const handleRemoveMeal = (dayId, mealPosition) => {
-    // Call backend to delete the meal from the database
-    // it is done by updating (PUT route) the meals array at the given position
-    fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/days/meal/`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`,
-      },
-      body: JSON.stringify({
-        dayId: dayId,
-        mealPosition: mealPosition,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data.result) {
-          console.error("Error deleting meal:", data.error);
-          return;
-        }
-
-        // Dispatch action to remove meal from store
-        dispatch(deleteMealFromDay({ dayId, mealPosition }));
-        setRefresh(!refresh); // Trigger a refresh of the screen
-      })
-      .catch((error) => console.error("Error deleting meal:", error));
-  };
-
   const handleMealDetail = (meal, mealPosition) => {
-    navigation.navigate("MealDetailScreen", {
+    navigation.navigate("MealAction", {
       dayId: day._id,
       mealId: meal.mealId,
       mealPosition,
+      mealImage: meal.mealImage,
       previousScreen: "Home",
     });
     dispatch(selectMeal(meal.mealId));
@@ -57,49 +24,45 @@ const DayCard = ({ day, navigation }) => {
       <Text style={styles.dayName}>{day.dayName}</Text>
       <View style={styles.mealsContainer}>
         {day.meals.map((meal, mealPosition) => (
-          <View key={mealPosition} style={styles.meal}>
-            {meal.mealId ? (
-              <>
-                <TouchableOpacity
-                  onPress={() => handleMealDetail(meal, mealPosition)}
-                >
-                  <Text style={styles.mealText}>{meal.mealName}</Text>
-                </TouchableOpacity>
-                <FontAwesome
-                  name='trash-o'
-                  size={24}
-                  color='red'
-                  onPress={() => handleRemoveMeal(day._id, mealPosition)}
-                />
-              </>
-            ) : (
-              <>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("SearchMeal", {
-                      dayId: day._id,
-                      mealPosition,
-                      previousScreen: "Home",
-                    })
-                  }
-                >
-                  <Text style={styles.mealText}>Ajouter un repas</Text>
-                </TouchableOpacity>
-                <FontAwesome
-                  name='plus'
-                  size={24}
-                  color='#7b4fff'
-                  onPress={() =>
-                    navigation.navigate("SearchMeal", {
-                      dayId: day._id,
-                      mealPosition,
-                      previousScreen: "Home",
-                    })
-                  }
-                />
-              </>
+          <React.Fragment key={mealPosition}>
+            <View style={styles.meal}>
+              <TouchableOpacity
+                onPress={() =>
+                  meal.mealId
+                    ? handleMealDetail(meal, mealPosition)
+                    : navigation.navigate("SearchMeal", {
+                        dayId: day._id,
+                        mealPosition,
+                        previousScreen: "Home",
+                      })
+                }
+                style={styles.mealContent}
+              >
+                <Text style={styles.mealText} numberOfLines={2}>
+                  {meal.mealId ? meal.mealName : "Ajouter un repas"}
+                </Text>
+                {meal.mealId && meal.mealImage ? (
+                  <Image
+                    source={
+                      images[meal.mealImage] ||
+                      require("../assets/default_image.png")
+                    }
+                    style={styles.mealImage}
+                  />
+                ) : (
+                  <FontAwesome
+                    name='plus'
+                    size={24}
+                    color='#7b4fff'
+                    style={styles.plusIcon}
+                  />
+                )}
+              </TouchableOpacity>
+            </View>
+            {mealPosition < day.meals.length - 1 && (
+              <View style={styles.separator} />
             )}
-          </View>
+          </React.Fragment>
         ))}
       </View>
     </View>
@@ -112,12 +75,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 10,
-    marginVertical: 20,
+    marginVertical: 20, // من
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,
+    height: 200,
   },
   dayName: {
     fontSize: 18,
@@ -127,6 +91,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   mealsContainer: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "space-around",
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: "#ddd",
@@ -135,13 +102,32 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    paddingVertical: 5,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#ddd",
+    marginVertical: 5,
+  },
+  mealContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "space-between",
   },
   mealText: {
     color: "#555",
-    fontSize: 18,
+    fontSize: 16,
+    flexShrink: 1,
+    marginRight: 10, // Adds spacing between text and icon/image
+  },
+  mealImage: {
+    width: 24,
+    height: 24,
+    borderRadius: 4, // Optional rounded corners
+  },
+  plusIcon: {
+    alignSelf: "center",
   },
 });
 

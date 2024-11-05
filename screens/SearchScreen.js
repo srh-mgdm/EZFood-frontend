@@ -25,10 +25,10 @@ export default function SearchScreen({ navigation, route }) {
 
   //   console.log("Search screen route params =>", route.params); //{"dayId": "6724e4477622d1eba6943237", "mealPosition": 0, "previousScreen": "Home"}
   useEffect(() => {
-    if (searchText.length > 4) {
-      fetch(
-        `${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/name/${searchText}`
-      )
+    let endpoint = `${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/name/${searchText}`;
+
+    if (searchText.length > 0) {
+      fetch(endpoint)
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
@@ -53,6 +53,7 @@ export default function SearchScreen({ navigation, route }) {
           dayId: route.params.dayId,
           mealId: meal._id,
           mealPosition: route.params.mealPosition,
+          mealImage: route.params.mealImage,
           previousScreen: "SearchMeal",
         });
       }
@@ -61,7 +62,7 @@ export default function SearchScreen({ navigation, route }) {
 
   const handleCreateMeal = () => {
     if (token) {
-    //   navigation.navigate("CreateMealScreen"); // Allow logged-in users to create a meal
+      //   navigation.navigate("CreateMealScreen"); // Allow logged-in users to create a meal
       Alert.alert("Fonctionnalité en développement");
     } else {
       Alert.alert("Vous devez être connecté pour créer un repas");
@@ -80,7 +81,7 @@ export default function SearchScreen({ navigation, route }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.logoContainer}>
-          <Image source={require("../assets/EZFood.png")} style={styles.logo} />
+          <Image source={require("../assets/EZFood_2.png")} style={styles.logo} />
         </View>
         {/* Search bar container */}
         <View style={styles.searchContainer}>
@@ -99,7 +100,7 @@ export default function SearchScreen({ navigation, route }) {
           />
         </View>
         {/* Display filtered search results below search bar */}
-        {searchText.length > 4 && (
+        {searchText.length > 0 && (
           <FlatList
             data={meals}
             renderItem={({ item }) => {
@@ -131,11 +132,12 @@ export default function SearchScreen({ navigation, route }) {
 
         {/* Button at the bottom of the screen to create a new meal */}
         <View style={styles.buttonContainer}>
-        <Pressable
+          <Pressable
             style={[
               styles.createButton,
               { backgroundColor: token ? "#7b4fff" : "#A9A9A9" },
-            ]}A9A9A9
+            ]}
+            A9A9A9
             onPress={handleCreateMeal}
           >
             <Text style={styles.createButtonText}>Créer un repas</Text>
@@ -145,7 +147,6 @@ export default function SearchScreen({ navigation, route }) {
             <Text style={styles.homeButtonText}>Retour à l'accueil</Text>
           </Pressable>
         </View>
-
       </KeyboardAvoidingView>
     </View>
   );
@@ -171,7 +172,8 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     resizeMode: "contain",
-    marginBottom: -100,
+    marginBottom: -95,
+    marginTop: -20,
   },
   searchContainer: {
     flexDirection: "row", // Row layout for search icon and input
@@ -207,7 +209,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     padding: 10,
   },
- buttonContainer: {
+  buttonContainer: {
     flexDirection: "row", // put bottoms in a row
     justifyContent: "space-between",
     padding: 20,

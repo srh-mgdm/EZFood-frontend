@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
   Image,
   Alert,
 } from "react-native";
@@ -13,11 +14,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { addMealToDay } from "../reducers/days";
 import images from "../assets/mealImages"; // Import images from Cloudinary file
 
+const { height } = Dimensions.get("window");
+
 export default function MealDetailScreen({ navigation, route }) {
   const dispatch = useDispatch();
   const userToken = useSelector((state) => state.user.value.token);
   const [meal, setMeal] = useState({});
-  const { mealId, dayId, mealPosition, previousScreen } = route.params;
+  const { mealId, dayId, mealPosition, mealImage, previousScreen } =
+    route.params;
+
+  // console.log("det params : ", route.params);
 
   useEffect(() => {
     fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/${mealId}`)
@@ -54,21 +60,30 @@ export default function MealDetailScreen({ navigation, route }) {
               mealId,
               mealName: meal.mealName,
               mealPosition,
+              mealImage: meal.mealImage,
             })
           );
           navigation.navigate("Home");
         });
     } else {
       dispatch(
-        addMealToDay({ dayId, mealId, mealName: meal.mealName, mealPosition })
+        addMealToDay({
+          dayId,
+          mealId,
+          mealName: meal.mealName,
+          mealPosition,
+          mealImage,
+        })
       );
       navigation.navigate("Home");
     }
   };
 
-  const ingredients = meal.mealIngredients?.map((data, i) => (
+  const ingredients = meal?.mealIngredients?.map((data, i) => (
     <View key={i} style={styles.ingredientItem}>
-      <Text style={styles.ingredientText}>{data.ingredientId.name}</Text>
+      <Text style={styles.ingredientText}>
+        {data?.ingredientId?.name || "N/A"}
+      </Text>
       <Text style={styles.quantityText}>{`${data.quantity} ${
         data.unit ? data.unit : ""
       }`}</Text>
@@ -80,29 +95,33 @@ export default function MealDetailScreen({ navigation, route }) {
       {`${data.stepNumber}. ${data.stepDescription}`}
     </Text>
   ));
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <Image
+        <Image
           source={images[meal.mealImage] || images["default_image.png"]}
           style={styles.mealImage}
-          resizeMode="cover"
+          resizeMode='cover'
         />
-         <View style={styles.mealNameContainer}>
+        <View style={styles.mealNameContainer}>
           <Text style={styles.mealName} numberOfLines={1}>
             {meal.mealName}
           </Text>
-          <TouchableOpacity style={styles.editIcon} onPress={() => Alert.alert("Fonctionnalité en développement")}>
-          <FontAwesome name='pencil' size={20} color='#1A237E' />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.editIcon}
+            onPress={() => Alert.alert("Fonctionnalité en développement")}
+          >
+            <FontAwesome name='pencil' size={20} color='#1A237E' />
+          </TouchableOpacity>
         </View>
-
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Ingredients</Text>
-        <ScrollView contentContainerStyle={styles.sectionContent}>
+        <Text style={styles.sectionTitle}>Ingrédients</Text>
+        <ScrollView
+          contentContainerStyle={styles.ingredientsContent}
+          style={styles.ingredientsContainer}
+        >
           {ingredients}
         </ScrollView>
       </View>
@@ -123,31 +142,35 @@ export default function MealDetailScreen({ navigation, route }) {
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Preparation Steps</Text>
-        <ScrollView contentContainerStyle={styles.sectionContent}>
+        <Text style={styles.sectionTitle}>Préparation</Text>
+        <ScrollView
+          contentContainerStyle={styles.stepsContent}
+          style={[
+            styles.stepsContainer,
+            { maxHeight: steps?.length <= 3 ? "auto" : height * 0.35 },
+          ]}
+        >
           {steps}
         </ScrollView>
       </View>
 
-      <View style={styles.footer}>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={styles.cancelButton}
+          style={styles.actionButton}
           onPress={() =>
             navigation.navigate(previousScreen, {
               dayId: dayId,
               mealId: mealId,
               mealPosition: mealPosition,
+              mealImage: mealImage,
               previousScreen: "MealDetailScreen",
             })
           }
         >
-          <Text style={styles.buttonText}>Cancel</Text>
+          <Text style={styles.buttonText}>Retour</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.validateButton}
-          onPress={handleValidate}
-        >
-          <Text style={styles.buttonText}>Validate</Text>
+        <TouchableOpacity style={styles.actionButton} onPress={handleValidate}>
+          <Text style={styles.buttonText}>Valider</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -157,7 +180,7 @@ export default function MealDetailScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f8ff", // Light background color for uniformity
+    backgroundColor: "#f0f8ff",
   },
   header: {
     backgroundColor: "rgb(173, 216, 230)",
@@ -182,7 +205,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderRadius: 5,
     flexDirection: "row",
-     alignItems: "center"
+    alignItems: "center",
   },
   mealName: {
     fontSize: 18,
@@ -207,14 +230,14 @@ const styles = StyleSheet.create({
     color: "#444",
     marginBottom: 8,
   },
-  sectionContent: {
+  ingredientsContainer: {
+    maxHeight: height * 0.25, // Reduced to show less height
+    borderRadius: 12,
+  },
+  ingredientsContent: {
+    padding: 10,
     backgroundColor: "#fff",
     borderRadius: 12,
-    padding: 15,
-    borderColor: "#e0e0e0", // Border for subtle contrast
-    borderWidth: 1,
-    marginVertical: 10,
-    paddingBottom: 15,
   },
   ingredientItem: {
     flexDirection: "row",
@@ -236,16 +259,26 @@ const styles = StyleSheet.create({
   infoContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "#f0f8ff", // Matches container background
-    paddingVertical: 15,
+    paddingVertical: 10,
   },
   infoItem: {
     alignItems: "center",
+    flexDirection: "row",
   },
   infoText: {
     fontSize: 16,
     color: "#333",
-    marginTop: 5,
+    marginLeft: 5,
+  },
+  stepsContainer: {
+    backgroundColor: "#fff", // match ingredients box
+    borderRadius: 12,
+    padding: 10,
+    // marginBottom: 10,
+  },
+  stepsContent: {
+    padding: 15,
+    paddingBottom: 25,
   },
   stepText: {
     fontSize: 16,
@@ -253,26 +286,28 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     lineHeight: 22,
   },
-  footer: {
+  buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 20,
+    justifyContent: "space-between",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#f0f8ff",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
   },
-  cancelButton: {
-    backgroundColor: "rgb(173, 216, 230)",
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-  },
-  validateButton: {
+  actionButton: {
+    flex: 1,
+    marginHorizontal: 5,
     backgroundColor: "#7b4fff",
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
+    borderRadius: 10,
+    alignItems: "center",
+    paddingVertical: 15,
   },
   buttonText: {
-    color: "white",
+    color: "#fff",
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "bold",
   },
 });
