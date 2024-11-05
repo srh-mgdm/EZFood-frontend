@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addMealToDay } from "../reducers/days";
-import images from "../assets/mealImages"; // Import images from Cloudinary file
+// import images from "../assets/mealImages"; // Import images from Cloudinary file
 
 const { height } = Dimensions.get("window");
 
@@ -72,7 +72,7 @@ export default function MealDetailScreen({ navigation, route }) {
           mealId,
           mealName: meal.mealName,
           mealPosition,
-          mealImage,
+          mealImage: meal.mealImage,
         })
       );
       navigation.navigate("Home");
@@ -99,7 +99,7 @@ export default function MealDetailScreen({ navigation, route }) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={images[meal.mealImage] || images["default_image.png"]}
+          source={{ uri: meal.mealImage || "https://res.cloudinary.com/dr5mo6tor/image/upload/v1730715667/default_image_htwtfq.png" }}
           style={styles.mealImage}
           resizeMode='cover'
         />
