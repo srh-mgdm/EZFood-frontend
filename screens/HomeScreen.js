@@ -80,8 +80,8 @@ export default function HomeScreen({ navigation }) {
                   dayName: data.day.dayName,
                   dayNumber: data.day.dayNumber,
                   meals: [
-                    { mealId: null, mealName: null },
-                    { mealId: null, mealName: null },
+                    { mealId: null, mealName: null, mealImage: null },
+                    { mealId: null, mealName: null, mealImage: null },
                   ],
                 },
               ])
