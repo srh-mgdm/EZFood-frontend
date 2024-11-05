@@ -31,7 +31,9 @@ export const Header = ({ navigation }) => {
   return (
     <View style={[styles.header, styles.background]}>
       <Text style={[styles.textHead, styles.foregroundColor]}>EZ FOOD</Text>
+      
       <View style={styles.rightSide}>
+      <FontAwesome name='shopping-cart' size={24} color='white' onPress={() => navigation.navigate("Ingredients") }/>
         <Text style={[styles.foregroundColor, styles.userName]}>
           {user || "Invité"}
         </Text>

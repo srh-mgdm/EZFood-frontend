@@ -125,24 +125,6 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  const handleIngredientsList = () => {
-    const mealIds = [];
-    // Boucle sur chaque jour
-    days.forEach((day) => {
-      // Boucle sur chaque repas du jour
-      day.meals.forEach((meal) => {
-        // Ajoute le mealId au tableau s'il existe
-        if (meal.mealId) {
-          // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
-          mealIds.push(meal.mealId);
-        }
-      });
-    });
-    navigation.navigate("Ingredients", {
-      mealIds,
-    });
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.head}>
