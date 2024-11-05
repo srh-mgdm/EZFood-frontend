@@ -12,7 +12,7 @@ const DayCard = ({ day, navigation }) => {
   const [refresh, setRefresh] = useState(false);
   const userToken = useSelector((state) => state.user.value.token);
 
-  //   console.log("Day props :", day);
+  //   console.log("Day props :" + day._id);
 
   const handleRemoveMeal = (dayId, mealPosition) => {
     // Call backend to delete the meal from the database
@@ -43,7 +43,7 @@ const DayCard = ({ day, navigation }) => {
   };
 
   const handleMealDetail = (meal, mealPosition) => {
-    navigation.navigate("MealDetailScreen", {
+    navigation.navigate("MealAction", {
       dayId: day._id,
       mealId: meal.mealId,
       mealPosition,
@@ -57,49 +57,54 @@ const DayCard = ({ day, navigation }) => {
       <Text style={styles.dayName}>{day.dayName}</Text>
       <View style={styles.mealsContainer}>
         {day.meals.map((meal, mealPosition) => (
-          <View key={mealPosition} style={styles.meal}>
-            {meal.mealId ? (
-              <>
-                <TouchableOpacity
-                  onPress={() => handleMealDetail(meal, mealPosition)}
-                >
-                  <Text style={styles.mealText}>{meal.mealName}</Text>
-                </TouchableOpacity>
-                <FontAwesome
-                  name='trash-o'
-                  size={24}
-                  color='red'
-                  onPress={() => handleRemoveMeal(day._id, mealPosition)}
-                />
-              </>
-            ) : (
-              <>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("SearchMeal", {
-                      dayId: day._id,
-                      mealPosition,
-                      previousScreen: "Home",
-                    })
-                  }
-                >
-                  <Text style={styles.mealText}>Ajouter un repas</Text>
-                </TouchableOpacity>
-                <FontAwesome
-                  name='plus'
-                  size={24}
-                  color='#7b4fff'
-                  onPress={() =>
-                    navigation.navigate("SearchMeal", {
-                      dayId: day._id,
-                      mealPosition,
-                      previousScreen: "Home",
-                    })
-                  }
-                />
-              </>
+          <>
+            <View key={mealPosition} style={styles.meal}>
+              {meal.mealId ? (
+                <>
+                  <TouchableOpacity
+                    onPress={() => handleMealDetail(meal, mealPosition)}
+                  >
+                    <Text style={styles.mealText}>{meal.mealName}</Text>
+                  </TouchableOpacity>
+                  <FontAwesome
+                    name='trash-o'
+                    size={24}
+                    color='red'
+                    onPress={() => handleRemoveMeal(day._id, mealPosition)}
+                  />
+                </>
+              ) : (
+                <>
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("SearchMeal", {
+                        dayId: day._id,
+                        mealPosition,
+                        previousScreen: "Home",
+                      })
+                    }
+                  >
+                    <Text style={styles.mealText}>Ajouter un repas</Text>
+                  </TouchableOpacity>
+                  <FontAwesome
+                    name='plus'
+                    size={24}
+                    color='#7b4fff'
+                    onPress={() =>
+                      navigation.navigate("SearchMeal", {
+                        dayId: day._id,
+                        mealPosition,
+                        previousScreen: "Home",
+                      })
+                    }
+                  />
+                </>
+              )}
+            </View>
+            {mealPosition < day.meals.length - 1 && (
+              <View style={styles.separator} />
             )}
-          </View>
+          </>
         ))}
       </View>
     </View>
@@ -112,12 +117,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 10,
-    marginVertical: 20,
+    marginVertical: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,
+    height: 200,
   },
   dayName: {
     fontSize: 18,
@@ -127,6 +133,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   mealsContainer: {
+    flex: 1, // Ensure it takes the available space within the card
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignContent: "stretch",
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: "#ddd",
@@ -135,13 +145,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    paddingVertical: 5, // Reduced to fit more items if necessary
+    // borderBottomWidth: 1,
+    // borderBottomColor: "#eee",
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#ddd",
+    marginVertical: 5,
   },
   mealText: {
     color: "#555",
-    fontSize: 18,
+    fontSize: 16, // Slightly reduced for more content to fit within the card
   },
 });
 

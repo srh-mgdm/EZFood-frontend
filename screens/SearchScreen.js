@@ -25,10 +25,10 @@ export default function SearchScreen({ navigation, route }) {
 
   //   console.log("Search screen route params =>", route.params); //{"dayId": "6724e4477622d1eba6943237", "mealPosition": 0, "previousScreen": "Home"}
   useEffect(() => {
-    if (searchText.length > 4) {
-      fetch(
-        `${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/name/${searchText}`
-      )
+    let endpoint = `${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/name/${searchText}`;
+
+    if (searchText.length > 0) {
+      fetch(endpoint)
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
@@ -99,7 +99,7 @@ export default function SearchScreen({ navigation, route }) {
           />
         </View>
         {/* Display filtered search results below search bar */}
-        {searchText.length > 4 && (
+        {searchText.length > 0 && (
           <FlatList
             data={meals}
             renderItem={({ item }) => {

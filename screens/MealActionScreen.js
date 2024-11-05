@@ -1,29 +1,99 @@
-
 import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 
-export default function MealScreen({ navigation }) {
+const handleRemoveMeal = (dayId, mealPosition) => {
+  // Call backend to delete the meal from the database
+  // it is done by updating (PUT route) the meals array at the given position
+  fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/days/meal/`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${userToken}`,
+    },
+    body: JSON.stringify({
+      dayId: dayId,
+      mealPosition: mealPosition,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.result) {
+        console.error("Error deleting meal:", data.error);
+        return;
+      }
+
+      // Dispatch action to remove meal from store
+      dispatch(deleteMealFromDay({ dayId, mealPosition }));
+      setRefresh(!refresh); // Trigger a refresh of the screen
+    })
+    .catch((error) => console.error("Error deleting meal:", error));
+};
+
+export default function MealScreen({ navigation, route }) {
+  const { mealId, dayId, mealPosition, previousScreen } = route.params;
   return (
     <View style={styles.container}>
       <Image source={require("../assets/EZFood.png")} style={styles.logo} />
 
+      {/* check meal detail by going to the MealDetail screen */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("MealDetailScreen")}
+          onPress={() =>
+            navigation.navigate("MealDetailScreen", {
+              dayId: dayId,
+              mealId: mealId,
+              mealPosition: mealPosition,
+              previousScreen: "MealAction",
+            })
+          }
         >
           <Text style={styles.buttonText}>Voir les détails</Text>
         </TouchableOpacity>
 
+        {/* change the meal by going to the Search screen */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("SearchMeal")}
+          onPress={() =>
+            navigation.navigate("SearchMeal", {
+              dayId: dayId,
+              mealId: mealId,
+              mealPosition: mealPosition,
+              previousScreen: "MealAction",
+            })
+          }
         >
           <Text style={styles.buttonText}>Changer le repas</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        {/* remove the selected meal from the selected day */}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            navigation.navigate("Home", {
+              dayId: dayId,
+              mealId: mealId,
+              mealPosition: mealPosition,
+              previousScreen: "MealAction",
+            })
+          }
+        >
           <Text style={styles.buttonText}>Supprimer le repas</Text>
+        </TouchableOpacity>
+
+        {/* go back to home */}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            navigation.navigate("Home", {
+              dayId: dayId,
+              mealId: mealId,
+              mealPosition: mealPosition,
+              previousScreen: "MealAction",
+            })
+          }
+        >
+          <Text style={styles.buttonText}>Retour</Text>
         </TouchableOpacity>
       </View>
     </View>
