@@ -20,8 +20,6 @@ export default function HomeScreen({ navigation }) {
   const userToken = useSelector((state) => state.user.value.token);
   const days = useSelector((state) => state.days.value || []);
 
-  //console.log("Days in the store ok=>", days[0]);
-
   // Fetch days when the component mounts
   useEffect(() => {
     if (userToken) {
@@ -43,32 +41,18 @@ export default function HomeScreen({ navigation }) {
     } else {
       // No user token,
       console.log("User not authenticated / guest user");
-      dispatch(
-        setDays([])
-        // setDays([
-        //   {
-        //     _id: "guestDayTemplate1",
-        //     dayName: "Jour 1",
-        //     dayNumber: 1,
-        //     meals: [
-        //       { mealId: null, mealName: null },
-        //       { mealId: null, mealName: null },
-        //     ],
-        //   },
-        //   {
-        //     _id: "guestDayTemplate2",
-        //     dayName: "Jour 2",
-        //     dayNumber: 2,
-        //     meals: [
-        //       { mealId: null, mealName: null },
-        //       { mealId: null, mealName: null },
-        //     ],
-        //   },
-        // ])
-      );
+      dispatch(setDays([]));
     }
   }, [userToken, dispatch]);
 
+  /*************  ✨ Codeium Command ⭐  *************/
+  /**
+   * Create a new day, either by sending a POST request to the backend,
+   * or by just updating the Redux store when there is no user token.
+   * When the request is successful, update the Redux store with the new day
+   * and new meals.
+   */
+  /******  08462f93-800b-4daa-8ec6-c3a0d8be1a1f  *******/
   const handleAddDay = () => {
     const newDay = {
       dayNumber: parseInt(days.length) + 1,
@@ -123,6 +107,35 @@ export default function HomeScreen({ navigation }) {
         ])
       );
     }
+  };
+
+  /*************  ✨ Codeium Command ⭐  *************/
+  /**
+   * Send an array of mealIds to the Ingredients screen, so that it can fetch the ingredients for those meals.
+   *
+   * This function is called when the user clicks on the "Liste des ingrédients" button.
+   *
+   * It loops through each day, and each meal in the day.
+   * If the meal has a mealId, it adds it to the mealIds array.
+   * Then, it navigates to the Ingredients screen, passing the mealIds array as a prop.
+   */
+  /******  8b546ca2-5e69-47aa-a7d5-3567c19c5841  *******/
+  const handleIngredientsList = () => {
+    const mealIds = [];
+    // Boucle sur chaque jour
+    days.forEach((day) => {
+      // Boucle sur chaque repas du jour
+      day.meals.forEach((meal) => {
+        // Ajoute le mealId au tableau s'il existe
+        if (meal.mealId) {
+          // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
+          mealIds.push(meal.mealId);
+        }
+      });
+    });
+    navigation.navigate("Ingredients", {
+      mealIds,
+    });
   };
 
   return (
