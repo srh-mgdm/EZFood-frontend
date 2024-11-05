@@ -53,6 +53,7 @@ export default function SearchScreen({ navigation, route }) {
           dayId: route.params.dayId,
           mealId: meal._id,
           mealPosition: route.params.mealPosition,
+          mealImage: route.params.mealImage,
           previousScreen: "SearchMeal",
         });
       }
@@ -61,7 +62,7 @@ export default function SearchScreen({ navigation, route }) {
 
   const handleCreateMeal = () => {
     if (token) {
-    //   navigation.navigate("CreateMealScreen"); // Allow logged-in users to create a meal
+      //   navigation.navigate("CreateMealScreen"); // Allow logged-in users to create a meal
       Alert.alert("Fonctionnalité en développement");
     } else {
       Alert.alert("Vous devez être connecté pour créer un repas");
@@ -131,11 +132,12 @@ export default function SearchScreen({ navigation, route }) {
 
         {/* Button at the bottom of the screen to create a new meal */}
         <View style={styles.buttonContainer}>
-        <Pressable
+          <Pressable
             style={[
               styles.createButton,
               { backgroundColor: token ? "#7b4fff" : "#A9A9A9" },
-            ]}A9A9A9
+            ]}
+            A9A9A9
             onPress={handleCreateMeal}
           >
             <Text style={styles.createButtonText}>Créer un repas</Text>
@@ -145,7 +147,6 @@ export default function SearchScreen({ navigation, route }) {
             <Text style={styles.homeButtonText}>Retour à l'accueil</Text>
           </Pressable>
         </View>
-
       </KeyboardAvoidingView>
     </View>
   );
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     padding: 10,
   },
- buttonContainer: {
+  buttonContainer: {
     flexDirection: "row", // put bottoms in a row
     justifyContent: "space-between",
     padding: 20,

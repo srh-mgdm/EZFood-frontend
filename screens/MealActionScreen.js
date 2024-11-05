@@ -5,8 +5,11 @@ import { deleteMealFromDay } from "../reducers/days";
 
 export default function MealScreen({ navigation, route }) {
   const dispatch = useDispatch();
-  const { mealId, dayId, mealPosition, previousScreen } = route.params;
+  const { mealId, dayId, mealPosition, mealImage, previousScreen } =
+    route.params;
   const userToken = useSelector((state) => state.user.value.token);
+
+  // console.log("action screen params : ", route.params);
 
   const handleRemoveMeal = (dayId, mealPosition) => {
     // Call backend to delete the meal from the database
@@ -44,6 +47,7 @@ export default function MealScreen({ navigation, route }) {
       dayId: dayId,
       mealId: mealId,
       mealPosition: mealPosition,
+      mealImage: mealImage,
       previousScreen: "MealAction",
     });
   };
@@ -61,6 +65,7 @@ export default function MealScreen({ navigation, route }) {
               dayId: dayId,
               mealId: mealId,
               mealPosition: mealPosition,
+              mealImage: mealImage,
               previousScreen: "MealAction",
             })
           }
@@ -76,6 +81,7 @@ export default function MealScreen({ navigation, route }) {
               dayId: dayId,
               mealId: mealId,
               mealPosition: mealPosition,
+              mealImage: mealImage,
               previousScreen: "MealAction",
             })
           }

@@ -20,7 +20,10 @@ export default function MealDetailScreen({ navigation, route }) {
   const dispatch = useDispatch();
   const userToken = useSelector((state) => state.user.value.token);
   const [meal, setMeal] = useState({});
-  const { mealId, dayId, mealPosition, previousScreen } = route.params;
+  const { mealId, dayId, mealPosition, mealImage, previousScreen } =
+    route.params;
+
+  // console.log("det params : ", route.params);
 
   useEffect(() => {
     fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/${mealId}`)
@@ -57,13 +60,20 @@ export default function MealDetailScreen({ navigation, route }) {
               mealId,
               mealName: meal.mealName,
               mealPosition,
+              mealImage: meal.mealImage,
             })
           );
           navigation.navigate("Home");
         });
     } else {
       dispatch(
-        addMealToDay({ dayId, mealId, mealName: meal.mealName, mealPosition })
+        addMealToDay({
+          dayId,
+          mealId,
+          mealName: meal.mealName,
+          mealPosition,
+          mealImage,
+        })
       );
       navigation.navigate("Home");
     }
@@ -152,6 +162,7 @@ export default function MealDetailScreen({ navigation, route }) {
               dayId: dayId,
               mealId: mealId,
               mealPosition: mealPosition,
+              mealImage: mealImage,
               previousScreen: "MealDetailScreen",
             })
           }

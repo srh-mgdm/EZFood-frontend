@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -80,8 +81,8 @@ export default function HomeScreen({ navigation }) {
                   dayName: data.day.dayName,
                   dayNumber: data.day.dayNumber,
                   meals: [
-                    { mealId: null, mealName: null },
-                    { mealId: null, mealName: null },
+                    { mealId: null, mealName: null, mealImage: null },
+                    { mealId: null, mealName: null, mealImage: null },
                   ],
                 },
               ])
@@ -157,6 +158,10 @@ export default function HomeScreen({ navigation }) {
           setForceRefresh(!forceRefresh);
         })
         .catch((error) => console.error("Error filling existing days:", error));
+    } else {
+      Alert.alert(
+        "Cette fonctionnalité est réservée aux utilisateurs connectés !"
+      );
     }
   };
 
@@ -212,8 +217,8 @@ const styles = StyleSheet.create({
     marginTop: "10%", // safe area
   },
   head: {
-    height: 100, // من
-    width: "100%",
+    height: 100,
+    width: "98%",
   },
   main: {
     flexGrow: 5,
