@@ -54,7 +54,7 @@ export default function MealScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/EZFood.png")} style={styles.logo} />
+      <Image source={require("../assets/EZFood_2.png")} style={styles.logo} />
 
       {/* check meal detail by going to the MealDetail screen */}
       <View style={styles.buttonContainer}>

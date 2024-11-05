@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch } from "react-redux";
 import { selectMeal } from "../reducers/meals";
-import images from "../assets/mealImages";
+// import images from "../assets/mealImages";
 
 const DayCard = ({ day, navigation }) => {
   const dispatch = useDispatch();
@@ -42,13 +42,12 @@ const DayCard = ({ day, navigation }) => {
                   {meal.mealId ? meal.mealName : "Ajouter un repas"}
                 </Text>
                 {meal.mealId && meal.mealImage ? (
-                  <Image
-                    source={
-                      images[meal.mealImage] ||
-                      require("../assets/default_image.png")
-                    }
-                    style={styles.mealImage}
-                  />
+                   <Image
+                   source={{
+                     uri: meal.mealImage || "https://res.cloudinary.com/dr5mo6tor/image/upload/v1730715667/default_image_htwtfq.png",
+                   }}
+                   style={styles.mealImage}
+                 />
                 ) : (
                   <FontAwesome
                     name='plus'
