@@ -20,7 +20,7 @@ export default function IngredientsScreen({ navigation }) {
     );
    // console.log('Collected meal IDs:', collectedMealIds , 'Number of meals:',collectedMealIds.length);
 
-   fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/ingredientslist`, {
+   fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/ingredients/list`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
