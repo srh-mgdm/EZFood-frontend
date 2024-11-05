@@ -80,7 +80,7 @@ export default function SearchScreen({ navigation, route }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <View style={styles.logoContainer}>
-          <Image source={require("../assets/EZFood.png")} style={styles.logo} />
+          <Image source={require("../assets/EZFood_2.png")} style={styles.logo} />
         </View>
         {/* Search bar container */}
         <View style={styles.searchContainer}>
@@ -171,7 +171,8 @@ const styles = StyleSheet.create({
     width: 300,
     height: 300,
     resizeMode: "contain",
-    marginBottom: -100,
+    marginBottom: -95,
+    marginTop: -20,
   },
   searchContainer: {
     flexDirection: "row", // Row layout for search icon and input

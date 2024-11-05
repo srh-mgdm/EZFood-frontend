@@ -6,16 +6,16 @@ import { Header } from '../components/Header';
 export default function IngredientsScreen({ navigation }) {
   const [ingredients, setIngredients] = useState([]);
   const days = useSelector((state) => state.days.value || []);
-  
 
-  
+
+
   useEffect(() => {
     mealIds = []
     meals = []
     days.forEach(e => { meals.push(e.meals)
     });
 
-    const collectedMealIds = meals.flatMap(dayMeals => 
+    const collectedMealIds = meals.flatMap(dayMeals =>
       dayMeals.map(meal => meal.mealId)
     );
    // console.log('Collected meal IDs:', collectedMealIds , 'Number of meals:',collectedMealIds.length);
@@ -25,23 +25,23 @@ export default function IngredientsScreen({ navigation }) {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ mealIds: collectedMealIds }) 
+    body: JSON.stringify({ mealIds: collectedMealIds })
   })
     .then((response) => response.json())
     .then((data) => {
       if (data.result) {
-        
+
        setIngredients(data.shoppingList)
       }
-      
+
     })
     .catch((error) => {
       console.error("Fetch error:", error);
     });
 }, [days]);
-  
-       
- 
+
+
+
 
   const content = ingredients.map((data, i) => (
     <View key={i} style={styles.card}>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderColor: '#e0e0e0',
     borderWidth: 1,
-    marginVertical: 10,
+    marginVertical: 60, // من
     paddingBottom: 15,
   },
   ingredientItem: {
