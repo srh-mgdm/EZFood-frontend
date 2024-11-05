@@ -8,8 +8,6 @@ import images from "../assets/mealImages";
 const DayCard = ({ day, navigation }) => {
   const dispatch = useDispatch();
 
-  // console.log("Day params =>", day.meals);
-
   const handleMealDetail = (meal, mealPosition) => {
     navigation.navigate("MealAction", {
       dayId: day._id,
@@ -26,58 +24,45 @@ const DayCard = ({ day, navigation }) => {
       <Text style={styles.dayName}>{day.dayName}</Text>
       <View style={styles.mealsContainer}>
         {day.meals.map((meal, mealPosition) => (
-          <>
-            <View key={mealPosition} style={styles.meal}>
-              {meal.mealId ? (
-                <>
-                  <TouchableOpacity
-                    onPress={() => handleMealDetail(meal, mealPosition)}
-                  >
-                    <Text style={styles.mealText}>{meal.mealName}</Text>
-                    {meal.mealImage && (
-                      <Image
-                        source={
-                          images[meal.mealImage] ||
-                          require("../assets/default_image.png")
-                        }
-                        style={styles.mealImage}
-                      />
-                    )}
-                  </TouchableOpacity>
-                </>
-              ) : (
-                <>
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate("SearchMeal", {
+          <React.Fragment key={mealPosition}>
+            <View style={styles.meal}>
+              <TouchableOpacity
+                onPress={() =>
+                  meal.mealId
+                    ? handleMealDetail(meal, mealPosition)
+                    : navigation.navigate("SearchMeal", {
                         dayId: day._id,
                         mealPosition,
                         previousScreen: "Home",
                       })
+                }
+                style={styles.mealContent}
+              >
+                <Text style={styles.mealText} numberOfLines={2}>
+                  {meal.mealId ? meal.mealName : "Ajouter un repas"}
+                </Text>
+                {meal.mealId && meal.mealImage ? (
+                  <Image
+                    source={
+                      images[meal.mealImage] ||
+                      require("../assets/default_image.png")
                     }
-                  >
-                    <Text style={styles.mealText}>Ajouter un repas</Text>
-                  </TouchableOpacity>
+                    style={styles.mealImage}
+                  />
+                ) : (
                   <FontAwesome
                     name='plus'
                     size={24}
                     color='#7b4fff'
-                    onPress={() =>
-                      navigation.navigate("SearchMeal", {
-                        dayId: day._id,
-                        mealPosition,
-                        mealImage,
-                        previousScreen: "Home",
-                      })
-                    }
+                    style={styles.plusIcon}
                   />
-                </>
-              )}
+                )}
+              </TouchableOpacity>
             </View>
             {mealPosition < day.meals.length - 1 && (
               <View style={styles.separator} />
             )}
-          </>
+          </React.Fragment>
         ))}
       </View>
     </View>
@@ -109,7 +94,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-around",
-    alignContent: "stretch",
     paddingVertical: 10,
     borderTopWidth: 1,
     borderTopColor: "#ddd",
@@ -128,17 +112,22 @@ const styles = StyleSheet.create({
   mealContent: {
     flexDirection: "row",
     alignItems: "center",
-    flex: 1, // Allow the content to take available space
+    flex: 1,
+    justifyContent: "space-between",
   },
   mealText: {
     color: "#555",
     fontSize: 16,
+    flexShrink: 1,
+    marginRight: 10, // Adds spacing between text and icon/image
   },
   mealImage: {
     width: 24,
     height: 24,
-    marginLeft: 10,
-    borderRadius: 4, // Optional: Rounded corners for a consistent look
+    borderRadius: 4, // Optional rounded corners
+  },
+  plusIcon: {
+    alignSelf: "center",
   },
 });
 

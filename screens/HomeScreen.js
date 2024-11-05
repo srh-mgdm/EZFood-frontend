@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -157,6 +158,10 @@ export default function HomeScreen({ navigation }) {
           setForceRefresh(!forceRefresh);
         })
         .catch((error) => console.error("Error filling existing days:", error));
+    } else {
+      Alert.alert(
+        "Cette fonctionnalité est réservée aux utilisateurs connectés !"
+      );
     }
   };
 
