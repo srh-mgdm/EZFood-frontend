@@ -1,36 +1,53 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-
-const handleRemoveMeal = (dayId, mealPosition) => {
-  // Call backend to delete the meal from the database
-  // it is done by updating (PUT route) the meals array at the given position
-  fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/days/meal/`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${userToken}`,
-    },
-    body: JSON.stringify({
-      dayId: dayId,
-      mealPosition: mealPosition,
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (!data.result) {
-        console.error("Error deleting meal:", data.error);
-        return;
-      }
-
-      // Dispatch action to remove meal from store
-      dispatch(deleteMealFromDay({ dayId, mealPosition }));
-      setRefresh(!refresh); // Trigger a refresh of the screen
-    })
-    .catch((error) => console.error("Error deleting meal:", error));
-};
+import { useDispatch, useSelector } from "react-redux";
+import { deleteMealFromDay } from "../reducers/days";
 
 export default function MealScreen({ navigation, route }) {
+  const dispatch = useDispatch();
   const { mealId, dayId, mealPosition, previousScreen } = route.params;
+  const userToken = useSelector((state) => state.user.value.token);
+
+  const handleRemoveMeal = (dayId, mealPosition) => {
+    // Call backend to delete the meal from the database
+    // it is done by updating (PUT route) the meals array at the given position
+    if (userToken) {
+      fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/days/meal/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+        body: JSON.stringify({
+          dayId: dayId,
+          mealPosition: mealPosition,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.result) {
+            console.error("Error deleting meal:", data.error);
+            return;
+          }
+
+          // Dispatch action to remove meal from store
+          dispatch(deleteMealFromDay({ dayId, mealPosition }));
+        })
+        .catch((error) => console.error("Error deleting meal:", error));
+    } else {
+      // No user token, only update redex store for guest user
+      dispatch(deleteMealFromDay({ dayId, mealPosition }));
+    }
+
+    // Go back to previous screen
+    navigation.navigate(previousScreen, {
+      dayId: dayId,
+      mealId: mealId,
+      mealPosition: mealPosition,
+      previousScreen: "MealAction",
+    });
+  };
+
   return (
     <View style={styles.container}>
       <Image source={require("../assets/EZFood.png")} style={styles.logo} />
@@ -69,14 +86,7 @@ export default function MealScreen({ navigation, route }) {
         {/* remove the selected meal from the selected day */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            navigation.navigate("Home", {
-              dayId: dayId,
-              mealId: mealId,
-              mealPosition: mealPosition,
-              previousScreen: "MealAction",
-            })
-          }
+          onPress={() => handleRemoveMeal(dayId, mealPosition)}
         >
           <Text style={styles.buttonText}>Supprimer le repas</Text>
         </TouchableOpacity>
@@ -84,14 +94,7 @@ export default function MealScreen({ navigation, route }) {
         {/* go back to home */}
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            navigation.navigate("Home", {
-              dayId: dayId,
-              mealId: mealId,
-              mealPosition: mealPosition,
-              previousScreen: "MealAction",
-            })
-          }
+          onPress={() => navigation.navigate("Home")}
         >
           <Text style={styles.buttonText}>Retour</Text>
         </TouchableOpacity>
@@ -105,7 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgb(173, 216, 230)",
     alignItems: "center",
-    paddingTop: 40, // فاصله از بالای صفحه برای قرارگیری لوگو
+    paddingTop: 40,
   },
   logo: {
     width: 400,
@@ -123,7 +126,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     marginVertical: 5,
-    width: "90%", // عرض دکمه
+    width: "90%",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,

@@ -45,14 +45,12 @@ export default function HomeScreen({ navigation }) {
     }
   }, [userToken, dispatch]);
 
-  /*************  ✨ Codeium Command ⭐  *************/
   /**
    * Create a new day, either by sending a POST request to the backend,
    * or by just updating the Redux store when there is no user token.
    * When the request is successful, update the Redux store with the new day
    * and new meals.
    */
-  /******  08462f93-800b-4daa-8ec6-c3a0d8be1a1f  *******/
   const handleAddDay = () => {
     const newDay = {
       dayNumber: parseInt(days.length) + 1,
@@ -109,7 +107,6 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  /*************  ✨ Codeium Command ⭐  *************/
   /**
    * Send an array of mealIds to the Ingredients screen, so that it can fetch the ingredients for those meals.
    *
@@ -119,7 +116,6 @@ export default function HomeScreen({ navigation }) {
    * If the meal has a mealId, it adds it to the mealIds array.
    * Then, it navigates to the Ingredients screen, passing the mealIds array as a prop.
    */
-  /******  8b546ca2-5e69-47aa-a7d5-3567c19c5841  *******/
   const handleIngredientsList = () => {
     const mealIds = [];
     // Boucle sur chaque jour

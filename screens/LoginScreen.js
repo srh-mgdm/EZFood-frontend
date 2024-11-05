@@ -7,7 +7,6 @@ import {
   Pressable,
   KeyboardAvoidingView,
   Platform,
-  ImageBackground,
   Image,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
@@ -54,8 +53,8 @@ export default function LoginScreen({ navigation }) {
           // Dispatch login action with token and username directly from server response
           dispatch(login({ token: data.token, username: data.username }));
           Alert.alert(
-            "Success",
-            isLogin ? "Login successful!" : "Signup successful!"
+            "Succès !",
+            isLogin ? "Connexion réussie !" : "Enregistrement réussi !"
           );
 
           navigation.navigate("Home");
@@ -65,11 +64,11 @@ export default function LoginScreen({ navigation }) {
           setUsername("");
           setRetypePassword("");
         } else {
-          Alert.alert("Error", data.error); // Display error message from server
+          Alert.alert("Erreur", data.error); // Display error message from server
         }
       })
       .catch((error) => {
-        Alert.alert("Network Error", "Failed to connect to server"); // Handle network errors
+        Alert.alert("Erreur réseau", "Failed to connect to server"); // Handle network errors
       });
   };
 

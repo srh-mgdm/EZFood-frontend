@@ -1,46 +1,11 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { deleteMealFromDay } from "../reducers/days";
+import { useDispatch } from "react-redux";
 import { selectMeal } from "../reducers/meals";
 
 const DayCard = ({ day, navigation }) => {
   const dispatch = useDispatch();
-
-  const [refresh, setRefresh] = useState(false);
-  const userToken = useSelector((state) => state.user.value.token);
-
-  //   console.log("Day props :" + day._id);
-
-  const handleRemoveMeal = (dayId, mealPosition) => {
-    // Call backend to delete the meal from the database
-    // it is done by updating (PUT route) the meals array at the given position
-    fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/days/meal/`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`,
-      },
-      body: JSON.stringify({
-        dayId: dayId,
-        mealPosition: mealPosition,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data.result) {
-          console.error("Error deleting meal:", data.error);
-          return;
-        }
-
-        // Dispatch action to remove meal from store
-        dispatch(deleteMealFromDay({ dayId, mealPosition }));
-        setRefresh(!refresh); // Trigger a refresh of the screen
-      })
-      .catch((error) => console.error("Error deleting meal:", error));
-  };
 
   const handleMealDetail = (meal, mealPosition) => {
     navigation.navigate("MealAction", {
@@ -66,12 +31,12 @@ const DayCard = ({ day, navigation }) => {
                   >
                     <Text style={styles.mealText}>{meal.mealName}</Text>
                   </TouchableOpacity>
-                  <FontAwesome
+                  {/* <FontAwesome
                     name='trash-o'
                     size={24}
                     color='red'
                     onPress={() => handleRemoveMeal(day._id, mealPosition)}
-                  />
+                  /> */}
                 </>
               ) : (
                 <>
@@ -145,7 +110,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 5, // Reduced to fit more items if necessary
+    paddingVertical: 5,
     // borderBottomWidth: 1,
     // borderBottomColor: "#eee",
   },
