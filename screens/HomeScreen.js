@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -19,6 +19,7 @@ export default function HomeScreen({ navigation }) {
   // Get user token and days from Redux store
   const userToken = useSelector((state) => state.user.value.token);
   const days = useSelector((state) => state.days.value || []);
+  const [forceRefresh, setForceRefresh] = useState(false);
 
   // Fetch days when the component mounts
   useEffect(() => {
@@ -43,7 +44,7 @@ export default function HomeScreen({ navigation }) {
       console.log("User not authenticated / guest user");
       dispatch(setDays([]));
     }
-  }, [userToken, dispatch]);
+  }, [userToken, forceRefresh]);
 
   /**
    * Create a new day, either by sending a POST request to the backend,
@@ -134,6 +135,31 @@ export default function HomeScreen({ navigation }) {
     });
   };
 
+  const handleFillExistingDays = () => {
+    if (userToken) {
+      fetch(
+        `${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/days/fillExistingDays`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (!data.result) {
+            console.error("Error filling existing days:", data.error);
+            return;
+          }
+          // dispatch(setDays(days));
+          setForceRefresh(!forceRefresh);
+        })
+        .catch((error) => console.error("Error filling existing days:", error));
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.head}>
@@ -169,7 +195,10 @@ export default function HomeScreen({ navigation }) {
         >
           <Text style={styles.buttonText}>Liste de courses</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleFillExistingDays()}
+        >
           <Text style={styles.buttonText}>Proposer des repas</Text>
         </TouchableOpacity>
       </View>
