@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     marginTop: "10%", // safe area
   },
   head: {
-    height: 50,
+    height: 100, // من
     width: "100%",
   },
   main: {
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 10,
-    marginVertical: 10,
+    marginVertical: 20, // من
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,

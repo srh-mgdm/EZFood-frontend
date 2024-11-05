@@ -84,7 +84,7 @@ export default function LoginScreen({ navigation }) {
     >
       <View style={styles.form}>
         {/* add logo */}
-        <Image source={require("../assets/EZFood.png")} style={styles.logo} />
+        <Image source={require("../assets/EZFood_1.png")} style={styles.logo} />
         {/* Form title changes based on the mode Connection ou register */}
         <Text style={styles.title}>
           {isLogin ? "Connexion" : "Inscription"}
