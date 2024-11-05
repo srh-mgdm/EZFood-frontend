@@ -69,9 +69,11 @@ export default function MealDetailScreen({ navigation, route }) {
     }
   };
 
-  const ingredients = meal.mealIngredients?.map((data, i) => (
+  const ingredients = meal?.mealIngredients?.map((data, i) => (
     <View key={i} style={styles.ingredientItem}>
-      <Text style={styles.ingredientText}>{data.ingredientId.name}</Text>
+      <Text style={styles.ingredientText}>
+        {data?.ingredientId?.name || "N/A"}
+      </Text>
       <Text style={styles.quantityText}>{`${data.quantity} ${
         data.unit ? data.unit : ""
       }`}</Text>
@@ -133,7 +135,10 @@ export default function MealDetailScreen({ navigation, route }) {
         <Text style={styles.sectionTitle}>Préparation</Text>
         <ScrollView
           contentContainerStyle={styles.stepsContent}
-          style={styles.stepsContainer}
+          style={[
+            styles.stepsContainer,
+            { maxHeight: steps?.length <= 3 ? "auto" : height * 0.35 },
+          ]}
         >
           {steps}
         </ScrollView>
@@ -215,7 +220,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   ingredientsContainer: {
-    maxHeight: height * 0.35, // Reduced to show less height
+    maxHeight: height * 0.25, // Reduced to show less height
     borderRadius: 12,
   },
   ingredientsContent: {
@@ -255,13 +260,14 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   stepsContainer: {
-    maxHeight: height * 0.35, // Limited height for visibility
-    backgroundColor: "#f7f7f7", // Different background color
+    backgroundColor: "#fff", // match ingredients box
     borderRadius: 12,
+    padding: 10,
+    // marginBottom: 10,
   },
   stepsContent: {
     padding: 15,
-    paddingBottom: 80, // Space for buttons
+    paddingBottom: 25,
   },
   stepText: {
     fontSize: 16,
