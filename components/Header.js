@@ -33,7 +33,6 @@ export const Header = ({ navigation }) => {
       <Image source={require("../assets/EZFood_2.png")} style={styles.logo} />
 
       <View style={styles.rightSide}>
-        {/* <FontAwesome name='shopping-cart' size={24} color='white' onPress={() => navigation.navigate("Ingredients") }/> */}
         <Text style={[styles.foregroundColor, styles.userName]}>
           {user || "Invité"}
         </Text>
