@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addMealToDay } from "../reducers/days";
+import { PanGestureHandler } from "react-native-gesture-handler";
 
 const { height } = Dimensions.get("window");
 
@@ -19,7 +20,8 @@ export default function MealDetailScreen({ navigation, route }) {
   const dispatch = useDispatch();
   const userToken = useSelector((state) => state.user.value.token);
   const [meal, setMeal] = useState({});
-  const [selectedTab, setSelectedTab] = useState("Ingredients");
+  // const [selectedTab, setSelectedTab] = useState("Ingredients");
+  const [activeTab, setActiveTab] = useState("Ingredients");
 
   const { mealId, dayId, mealPosition, mealImage, previousScreen } =
     route.params;
@@ -75,6 +77,14 @@ export default function MealDetailScreen({ navigation, route }) {
         })
       );
       navigation.navigate("Home");
+    }
+  };
+
+  const handleSwipe = ({ nativeEvent }) => {
+    if (nativeEvent.translationX < -50 && activeTab === "Ingredients") {
+      setActiveTab("Steps");
+    } else if (nativeEvent.translationX > 50 && activeTab === "Steps") {
+      setActiveTab("Ingredients");
     }
   };
 
@@ -137,46 +147,44 @@ export default function MealDetailScreen({ navigation, route }) {
 
       <View style={styles.tabBar}>
         <TouchableOpacity
-          style={[
-            styles.tab,
-            selectedTab === "Ingredients" && styles.activeTab,
-          ]}
-          onPress={() => setSelectedTab("Ingredients")}
+          style={[styles.tab, activeTab === "Ingredients" && styles.activeTab]}
+          onPress={() => setActiveTab("Ingredients")}
         >
           <Text
             style={[
               styles.tabText,
-              selectedTab === "Ingredients" && styles.activeTabText,
+              activeTab === "Ingredients" && styles.activeTabText,
             ]}
           >
             Ingrédients
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.tab, selectedTab === "Steps" && styles.activeTab]}
-          onPress={() => setSelectedTab("Steps")}
+          style={[styles.tab, activeTab === "Steps" && styles.activeTab]}
+          onPress={() => setActiveTab("Steps")}
         >
           <Text
             style={[
               styles.tabText,
-              selectedTab === "Steps" && styles.activeTabText,
+              activeTab === "Steps" && styles.activeTabText,
             ]}
           >
             Préparation
           </Text>
         </TouchableOpacity>
       </View>
-
-      <ScrollView
-        contentContainerStyle={styles.contentContainer}
-        style={styles.scrollableContainer}
-      >
-        {selectedTab === "Ingredients" ? (
-          <View style={styles.ingredientsContainer}>{ingredients}</View>
-        ) : (
-          <View style={styles.stepsContainer}>{steps}</View>
-        )}
-      </ScrollView>
+      <PanGestureHandler onGestureEvent={handleSwipe}>
+        <ScrollView
+          contentContainerStyle={styles.contentContainer}
+          style={styles.scrollableContainer}
+        >
+          {activeTab === "Ingredients" ? (
+            <View style={styles.ingredientsContainer}>{ingredients}</View>
+          ) : (
+            <View style={styles.stepsContainer}>{steps}</View>
+          )}
+        </ScrollView>
+      </PanGestureHandler>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
