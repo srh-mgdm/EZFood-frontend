@@ -42,12 +42,14 @@ const DayCard = ({ day, navigation }) => {
                   {meal.mealId ? meal.mealName : "Ajouter un repas"}
                 </Text>
                 {meal.mealId && meal.mealImage ? (
-                   <Image
-                   source={{
-                     uri: meal.mealImage || "https://res.cloudinary.com/dr5mo6tor/image/upload/v1730715667/default_image_htwtfq.png",
-                   }}
-                   style={styles.mealImage}
-                 />
+                  <Image
+                    source={{
+                      uri:
+                        meal.mealImage ||
+                        "https://res.cloudinary.com/dr5mo6tor/image/upload/v1730715667/default_image_htwtfq.png",
+                    }}
+                    style={styles.mealImage}
+                  />
                 ) : (
                   <FontAwesome
                     name='plus'

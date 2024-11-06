@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addMealToDay } from "../reducers/days";
-// import images from "../assets/mealImages"; // Import images from Cloudinary file
 
 const { height } = Dimensions.get("window");
 
@@ -20,10 +19,10 @@ export default function MealDetailScreen({ navigation, route }) {
   const dispatch = useDispatch();
   const userToken = useSelector((state) => state.user.value.token);
   const [meal, setMeal] = useState({});
+  const [selectedTab, setSelectedTab] = useState("Ingredients");
+
   const { mealId, dayId, mealPosition, mealImage, previousScreen } =
     route.params;
-
-  // console.log("det params : ", route.params);
 
   useEffect(() => {
     fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/${mealId}`)
@@ -95,11 +94,16 @@ export default function MealDetailScreen({ navigation, route }) {
       {`${data.stepNumber}. ${data.stepDescription}`}
     </Text>
   ));
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={{ uri: meal.mealImage || "https://res.cloudinary.com/dr5mo6tor/image/upload/v1730715667/default_image_htwtfq.png" }}
+          source={{
+            uri:
+              meal.mealImage ||
+              "https://res.cloudinary.com/dr5mo6tor/image/upload/v1730715667/default_image_htwtfq.png",
+          }}
           style={styles.mealImage}
           resizeMode='cover'
         />
@@ -114,16 +118,6 @@ export default function MealDetailScreen({ navigation, route }) {
             <FontAwesome name='pencil' size={20} color='#1A237E' />
           </TouchableOpacity>
         </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Ingrédients</Text>
-        <ScrollView
-          contentContainerStyle={styles.ingredientsContent}
-          style={styles.ingredientsContainer}
-        >
-          {ingredients}
-        </ScrollView>
       </View>
 
       <View style={styles.infoContainer}>
@@ -141,28 +135,58 @@ export default function MealDetailScreen({ navigation, route }) {
         </View>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Préparation</Text>
-        <ScrollView
-          contentContainerStyle={styles.stepsContent}
+      <View style={styles.tabBar}>
+        <TouchableOpacity
           style={[
-            styles.stepsContainer,
-            { maxHeight: steps?.length <= 3 ? "auto" : height * 0.35 },
+            styles.tab,
+            selectedTab === "Ingredients" && styles.activeTab,
           ]}
+          onPress={() => setSelectedTab("Ingredients")}
         >
-          {steps}
-        </ScrollView>
+          <Text
+            style={[
+              styles.tabText,
+              selectedTab === "Ingredients" && styles.activeTabText,
+            ]}
+          >
+            Ingrédients
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, selectedTab === "Steps" && styles.activeTab]}
+          onPress={() => setSelectedTab("Steps")}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              selectedTab === "Steps" && styles.activeTabText,
+            ]}
+          >
+            Préparation
+          </Text>
+        </TouchableOpacity>
       </View>
+
+      <ScrollView
+        contentContainerStyle={styles.contentContainer}
+        style={styles.scrollableContainer}
+      >
+        {selectedTab === "Ingredients" ? (
+          <View style={styles.ingredientsContainer}>{ingredients}</View>
+        ) : (
+          <View style={styles.stepsContainer}>{steps}</View>
+        )}
+      </ScrollView>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.actionButton}
           onPress={() =>
             navigation.navigate(previousScreen, {
-              dayId: dayId,
-              mealId: mealId,
-              mealPosition: mealPosition,
-              mealImage: mealImage,
+              dayId,
+              mealId,
+              mealPosition,
+              mealImage,
               previousScreen: "MealDetailScreen",
             })
           }
@@ -184,17 +208,11 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "rgb(173, 216, 230)",
-    paddingVertical: 0,
-    paddingHorizontal: 0,
-    paddingTop: 60, // Adjusted for more space from top
     alignItems: "center",
-    position: "relative",
   },
   mealImage: {
     width: "100%",
     height: 100,
-    borderRadius: 10,
-    marginBottom: 0,
   },
   mealNameContainer: {
     position: "absolute",
@@ -215,46 +233,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   editIcon: {
-    // position: "absolute",
-    // top: 60,
-    // right: 20,
     marginLeft: 15,
-  },
-  section: {
-    marginVertical: 10,
-    paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#444",
-    marginBottom: 8,
-  },
-  ingredientsContainer: {
-    maxHeight: height * 0.25, // Reduced to show less height
-    borderRadius: 12,
-  },
-  ingredientsContent: {
-    padding: 10,
-    backgroundColor: "#fff",
-    borderRadius: 12,
-  },
-  ingredientItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderColor: "#e6e6e6",
-  },
-  ingredientText: {
-    fontSize: 16,
-    color: "#333",
-    fontWeight: "500",
-  },
-  quantityText: {
-    fontSize: 16,
-    color: "#333",
-    fontWeight: "500",
   },
   infoContainer: {
     flexDirection: "row",
@@ -270,15 +249,62 @@ const styles = StyleSheet.create({
     color: "#333",
     marginLeft: 5,
   },
-  stepsContainer: {
-    backgroundColor: "#fff", // match ingredients box
-    borderRadius: 12,
-    padding: 10,
-    // marginBottom: 10,
+  tabBar: {
+    flexDirection: "row",
+    backgroundColor: "#e0f0ff",
+    justifyContent: "space-around",
+    paddingVertical: 10,
   },
-  stepsContent: {
-    padding: 15,
-    paddingBottom: 25,
+  tab: {
+    paddingVertical: 10,
+    flex: 1,
+    alignItems: "center",
+  },
+  activeTab: {
+    borderBottomWidth: 2,
+    borderColor: "#7b4fff",
+  },
+  tabText: {
+    fontSize: 16,
+    color: "#666",
+  },
+  activeTabText: {
+    color: "#7b4fff",
+    fontWeight: "bold",
+  },
+  scrollableContainer: {
+    flex: 1,
+    marginBottom: 60,
+  },
+  contentContainer: {
+    paddingBottom: 80,
+  },
+  ingredientsContainer: {
+    padding: 10,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    marginHorizontal: 20,
+  },
+  ingredientItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderColor: "#e6e6e6",
+  },
+  ingredientText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  quantityText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  stepsContainer: {
+    padding: 10,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    marginHorizontal: 20,
   },
   stepText: {
     fontSize: 16,
