@@ -43,10 +43,7 @@ const DayCard = ({ day, navigation }) => {
                 </Text>
                 {meal.mealId && meal.mealImage ? (
                   <Image
-                    source={
-                      images[meal.mealImage] ||
-                      require("../assets/default_image.png")
-                    }
+                    source={{ uri: meal.mealImage }}
                     style={styles.mealImage}
                   />
                 ) : (
