@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3, // Shadow opacity
         shadowRadius: 6, // Shadow blur radius
         elevation: 10, // Elevation for Android
-        right:-10,
-        left:4,
+        // right:-10,
+        // left:4,
 
       },
   foregroundColor: {
@@ -97,11 +97,9 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 18,
-    paddingRight: 10,
+    paddingRight: 20,
   },
   logo: {
-    width: 200, // Adjust the width of the logo
-    height: 100,  // Adjust the height of the logo
     width: 300, // Adjust the width of the logo
     height: 100,  // Adjust the height of the logo
     resizeMode: "contain",

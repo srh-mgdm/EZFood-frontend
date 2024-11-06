@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   width: "100%",
   alignSelf: "center",
 },
-sampleText: { fontSize: 18, fontWeight: "600", color: "#333" },
+
   gradientOverlay: {
     position: "absolute",
     left: 0,
