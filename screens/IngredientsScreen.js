@@ -24,23 +24,23 @@ export default function IngredientsScreen({ navigation }) {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ mealIds: collectedMealIds }) 
+    body: JSON.stringify({ mealIds: collectedMealIds })
   })
     .then((response) => response.json())
     .then((data) => {
       if (data.result) {
-        
+
        setIngredients(data.shoppingList)
       }
-      
+
     })
     .catch((error) => {
       console.error("Fetch error:", error);
     });
 }, [days]);
-  
-       
- 
+
+
+
 
   const content = ingredients.map((data, i) => (
     <View key={i} style={styles.card}>
@@ -73,7 +73,9 @@ const styles = StyleSheet.create({
   },
   head: {
     height: 50,
-    width: "100%",
+    width: "98%",
+    left: 0,
+
   },
   sectionContent: {
     backgroundColor: "#fff",

@@ -5,7 +5,7 @@ import { deleteMealFromDay } from "../reducers/days";
 
 export default function MealScreen({ navigation, route }) {
   const dispatch = useDispatch();
-  const { mealId, dayId, mealPosition, mealImage, previousScreen } =
+  const { mealId, dayId, mealPosition, mealImage, mealName, previousScreen } =
     route.params;
   const userToken = useSelector((state) => state.user.value.token);
 
@@ -54,7 +54,11 @@ export default function MealScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/EZFood_2.png")} style={styles.logo} />
+      {/* <Image source={require("../assets/EZFood_2.png")} style={styles.logo} /> */}
+
+    <Text style={styles.mealName}>{mealName}</Text>
+
+    <Image source={{ uri: mealImage }} style={styles.logo} />
 
       {/* check meal detail by going to the MealDetail screen */}
       <View style={styles.buttonContainer}>
@@ -117,13 +121,16 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   logo: {
-    width: 400,
-    height: 400,
+    width: 200,
+    height: 200,
     marginBottom: 5,
+    marginTop: 30,
+    borderRadius: 30,
   },
   buttonContainer: {
     width: "100%",
     alignItems: "center",
+    marginTop: 50,
   },
   button: {
     backgroundColor: "#7b4fff",
@@ -144,4 +151,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  mealName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginTop: 100,
+    textAlign: "center",
+    color: "#7b4fff",
+  },
+
 });

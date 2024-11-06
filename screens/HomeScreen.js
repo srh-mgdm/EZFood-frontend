@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   Alert,
+  Image,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -180,7 +181,11 @@ export default function HomeScreen({ navigation }) {
 
         {/* Always a "new day" card at the end of the list */}
         <View style={styles.sampleCard}>
-          <TouchableOpacity onPress={() => handleAddDay()}>
+        <TouchableOpacity onPress={() => handleAddDay()} style={styles.iconContainer}>
+            <Image
+              source={require("../assets/plus.png")}
+              style={styles.iconImage}
+            />
             <Text style={styles.sampleText}>Ajouter une journée</Text>
           </TouchableOpacity>
         </View>
@@ -215,6 +220,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: "10%", // safe area
+
   },
   head: {
     height: 100,
@@ -234,10 +240,10 @@ const styles = StyleSheet.create({
   sampleCard: {
     width: "48%",
     height: 200,
-    backgroundColor: "#fff",
+    backgroundColor: "#b3a3ff",
     borderRadius: 10,
     padding: 10,
-    marginVertical: 20, // من
+    marginVertical: 10, // the same with marginVertical of style 's dayCard
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -246,7 +252,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  sampleText: { fontSize: 18, fontWeight: "600", color: "#333" },
+  sampleText: {
+     fontSize: 18,
+     fontWeight: "600",
+     color: "white",
+     marginBottom: 30,
+    },
   gradientOverlay: {
     position: "absolute",
     left: 0,
@@ -277,5 +288,12 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  iconImage: {
+    width: 100,
+    height: 100,
+    resizeMode: "contain",
+    marginBottom: -25,
+    marginLeft: 35,
   },
 });

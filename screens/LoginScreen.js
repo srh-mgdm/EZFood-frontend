@@ -43,8 +43,8 @@ export default function LoginScreen({ navigation }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(
         isLogin
-          ? { email, password } // Directly send login data
-          : { username, email, password, retypePassword } // Directly send signup data
+          ? { email:email.toLowerCase(), password } // Directly send login data
+          : { username, email:email.toLowerCase(), password, retypePassword } // Directly send signup data
       ),
     })
       .then((response) => response.json())
@@ -112,7 +112,8 @@ export default function LoginScreen({ navigation }) {
             style={styles.input}
             placeholder='Email'
             value={email}
-            onChangeText={setEmail} // Updates username state on change
+            autoCapitalize="none" //avoid to put majuscule letters
+            onChangeText={(text) => setEmail(text.toLowerCase())} // Updates username state on change and transform to minuscule letters
           />
         </View>
 
