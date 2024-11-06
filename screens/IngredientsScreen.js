@@ -19,23 +19,28 @@ export default function IngredientsScreen({ navigation }) {
     );
     // console.log('Collected meal IDs:', collectedMealIds , 'Number of meals:',collectedMealIds.length);
 
-    fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/meals/ingredientslist`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ mealIds: collectedMealIds }),
+   fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/ingredients/list`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ mealIds: collectedMealIds }) 
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.result) {
+        
+       setIngredients(data.shoppingList)
+      }
+      
     })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          setIngredients(data.shoppingList);
-        }
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-      });
-  }, [days]);
+    .catch((error) => {
+      console.error("Fetch error:", error);
+    });
+}, [days]);
+  
+       
+ 
 
   const content = ingredients.map((data, i) => (
     <View key={i} style={styles.card}>
