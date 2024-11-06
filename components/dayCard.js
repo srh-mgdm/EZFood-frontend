@@ -13,6 +13,7 @@ const DayCard = ({ day, navigation }) => {
       dayId: day._id,
       mealId: meal.mealId,
       mealPosition,
+      mealName: meal.mealName,
       mealImage: meal.mealImage,
       previousScreen: "Home",
     });
@@ -54,7 +55,7 @@ const DayCard = ({ day, navigation }) => {
                   <FontAwesome
                     name='plus'
                     size={24}
-                    color='#7b4fff'
+                    color='#064ead'
                     style={styles.plusIcon}
                   />
                 )}
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 10,
-    marginVertical: 20, // من
+    marginVertical: 10, // the same the same with marginVertical of style 's sampleCard
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
   dayName: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#333",
+    color: "#064ead",
     marginBottom: 10,
     textAlign: "center",
   },
@@ -123,8 +124,8 @@ const styles = StyleSheet.create({
     marginRight: 10, // Adds spacing between text and icon/image
   },
   mealImage: {
-    width: 24,
-    height: 24,
+    width: 50,
+    height: 50,
     borderRadius: 4, // Optional rounded corners
   },
   plusIcon: {

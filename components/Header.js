@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Alert } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../reducers/user";
@@ -8,16 +8,39 @@ export const Header = ({ navigation }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value.username);
 
+    // Capitalize the first letter of the username
+    const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+
+   // Define logout confirmation
+   const confirmLogout = () => {
+    Alert.alert(
+      "Déconnexion", // Title of the alert
+      "Êtes-vous sûr de vouloir vous déconnecter ?", // Message of the alert
+      [
+        {
+          text: "Non",
+          style: "cancel",
+        },
+        {
+          text: "Oui",
+          onPress: () => {
+            dispatch(logout()); // Clear the user from Redux store
+            navigation.replace("Home"); // Redirect to HomeScreen
+          },
+        },
+      ],
+      { cancelable: true } // The option to close the alert by tapping outside the window( only works in android)
+    );
+  };
+
   // Define the icon based on the user's login status
   const icon = user ? (
     <FontAwesome
       name='sign-out'
       size={30}
       color='white'
-      onPress={() => {
-        dispatch(logout()); // Clear the user from Redux store
-        // navigation.replace("HomeScreen"); // Redirect to HomeScreen
-      }}
+      onPress={confirmLogout} // Call the logout confirmation function when the icon is pressed
     />
   ) : (
     <FontAwesome
@@ -34,7 +57,7 @@ export const Header = ({ navigation }) => {
 
       <View style={styles.rightSide}>
         <Text style={[styles.foregroundColor, styles.userName]}>
-          {user || "Invité"}
+        {user ? capitalize(user) : "Invité"}
         </Text>
         {icon}
       </View>
@@ -52,6 +75,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3, // Shadow opacity
         shadowRadius: 6, // Shadow blur radius
         elevation: 10, // Elevation for Android
+        right:-10,
+        left:4,
 
       },
   foregroundColor: {
@@ -59,24 +84,29 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
+    height: 65,
     height: 60,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: "5%",
+    paddingHorizontal: "8%",
   },
   rightSide: {
     flexDirection: "row",
     alignItems: "center",
   },
   userName: {
-    fontSize: 20,
+    fontSize: 18,
     paddingRight: 10,
   },
   logo: {
+    width: 200, // Adjust the width of the logo
+    height: 100,  // Adjust the height of the logo
     width: 300, // Adjust the width of the logo
     height: 100,  // Adjust the height of the logo
     resizeMode: "contain",
+    marginLeft: -80,
+    marginTop: 20,
     marginLeft: -120,
     marginTop: 20,
   },

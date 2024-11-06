@@ -33,7 +33,7 @@ export default function IngredientsScreen({ navigation }) {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ mealIds: collectedMealIds }) 
+    body: JSON.stringify({ mealIds: collectedMealIds })
   })
     .then((response) => response.json())
     .then((data) => {
@@ -41,7 +41,7 @@ export default function IngredientsScreen({ navigation }) {
         //console.log(data)
        setIngredients(data.shoppingList)
       }
-      
+
     })
     .catch((error) => {
       console.error("Fetch error:", error);
