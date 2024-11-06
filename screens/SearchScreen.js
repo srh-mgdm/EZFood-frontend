@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
-import images from "../assets/mealImages"; // Import images from separate module
+// import images from "../assets/mealImages"; // Import images from separate module
 
 // receiving `navigation` as a prop for navigation functionality
 export default function SearchScreen({ navigation, route }) {
@@ -53,7 +53,7 @@ export default function SearchScreen({ navigation, route }) {
           dayId: route.params.dayId,
           mealId: meal._id,
           mealPosition: route.params.mealPosition,
-          mealImage: route.params.mealImage,
+          mealImage: meal.mealImage, //من
           previousScreen: "SearchMeal",
         });
       }
@@ -112,10 +112,7 @@ export default function SearchScreen({ navigation, route }) {
                   {/* Each item in the list */}
                   <View style={styles.row}>
                     <Image
-                      source={
-                        images[item.mealImage] ||
-                        require("../assets/default_image.png")
-                      }
+                      source={{ uri: item.mealImage || "https://res.cloudinary.com/dr5mo6tor/image/upload/v1730715667/default_image_htwtfq.png" }}
                       style={styles.mealImage}
                     />
                     <Text style={styles.resultText}>{item.mealName}</Text>
