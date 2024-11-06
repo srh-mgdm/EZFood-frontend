@@ -119,21 +119,19 @@ export default function HomeScreen({ navigation }) {
    * Then, it navigates to the Ingredients screen, passing the mealIds array as a prop.
    */
   const handleIngredientsList = () => {
-    const mealIds = [];
-    // Boucle sur chaque jour
-    days.forEach((day) => {
-      // Boucle sur chaque repas du jour
-      day.meals.forEach((meal) => {
-        // Ajoute le mealId au tableau s'il existe
-        if (meal.mealId) {
-          // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
-          mealIds.push(meal.mealId);
-        }
-      });
-    });
-    navigation.navigate("Ingredients", {
-      mealIds,
-    });
+    // const mealIds = [];
+    // // Boucle sur chaque jour
+    // days.forEach((day) => {
+    //   // Boucle sur chaque repas du jour
+    //   day.meals.forEach((meal) => {
+    //     // Ajoute le mealId au tableau s'il existe
+    //     if (meal.mealId) {
+    //       // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
+    //       mealIds.push(meal.mealId);
+    //     }
+    //   });
+    // });
+    navigation.navigate("Ingredients");
   };
 
   const handleFillExistingDays = () => {
@@ -215,10 +213,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: "10%", // safe area
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   head: {
     height: 100,
     width: "98%",
+    padding: 5,
   },
   main: {
     flexGrow: 5,

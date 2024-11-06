@@ -30,7 +30,7 @@ export const Header = ({ navigation }) => {
 
   return (
     <View style={[styles.header, styles.background]}>
-        <Image source={require("../assets/EZFood_2.png")} style={styles.logo} />
+        <Image source={require("../assets/EZFood_2.png")} style={styles.logo}/>
 
       <View style={styles.rightSide}>
         {/* <FontAwesome name='shopping-cart' size={24} color='white' onPress={() => navigation.navigate("Ingredients") }/> */}
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 85,
+    height: 60,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -76,9 +76,9 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 300, // Adjust the width of the logo
-    height: 150,  // Adjust the height of the logo
+    height: 100,  // Adjust the height of the logo
     resizeMode: "contain",
     marginLeft: -120,
-    marginTop: 30,
+    marginTop: 20,
   },
 });

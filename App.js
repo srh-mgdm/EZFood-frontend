@@ -13,10 +13,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/user";
 import days from "./reducers/days";
 import meals from "./reducers/meals";
+import shop from "./reducers/shopping";
 
 
 const store = configureStore({
-  reducer: { user, days, meals },
+  reducer: { user, days, meals, shop },
 });
 
 const Stack = createNativeStackNavigator();
