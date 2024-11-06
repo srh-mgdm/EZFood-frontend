@@ -12,6 +12,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { login } from "../reducers/user"; // Import the login action from user reducer
+import { deleteDays } from "../reducers/days";
 import { Alert } from "react-native";
 
 // useState to manage form mode (connection or registeration) and input values
@@ -50,6 +51,11 @@ export default function LoginScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
+          // Delete all days from redux store
+          // Necessary when going from guest to login
+          // so that days input while guest are not carried over to logged user
+          dispatch(deleteDays());
+
           // Dispatch login action with token and username directly from server response
           dispatch(login({ token: data.token, username: data.username }));
           Alert.alert(

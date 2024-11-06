@@ -8,14 +8,14 @@ export const daysSlice = createSlice({
   name: "days",
   initialState,
   reducers: {
-    agitddDay: (state, action) => {
-      state.value.push = action.payload;
-    },
+    // agitddDay: (state, action) => {
+    //   state.value.push = action.payload;
+    // },
     setDays: (state, action) => {
       state.value = action.payload;
     },
-    deleteDay: (state, action) => {
-      state.value = action.payload;
+    deleteDays: (state, action) => {
+      state.value = [];
     },
     addMealToDay: (state, action) => {
       const { dayId, mealId, mealName, mealPosition, mealImage } =
@@ -64,7 +64,7 @@ export const daysSlice = createSlice({
   },
 });
 
-export const { addDay, setDays, deleteDay, addMealToDay, deleteMealFromDay } =
+export const { addDay, setDays, deleteDays, addMealToDay, deleteMealFromDay } =
   daysSlice.actions;
 
 export default daysSlice.reducer;

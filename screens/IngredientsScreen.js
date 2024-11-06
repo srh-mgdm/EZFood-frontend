@@ -1,10 +1,13 @@
-import { Button, StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+// import CheckBox from '@react-native-community/checkbox';
+import Checkbox from 'expo-checkbox';
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Header } from "../components/Header";
 
 export default function IngredientsScreen({ navigation }) {
   const [ingredients, setIngredients] = useState([]);
+  const [isChecked, setChecked] = useState(false);
   const days = useSelector((state) => state.days.value || []);
 
   useEffect(() => {
@@ -44,12 +47,12 @@ export default function IngredientsScreen({ navigation }) {
 
   const content = ingredients.map((data, i) => (
     <View key={i} style={styles.card}>
-      <View style={styles.ingredientItem}>
+      <Checkbox style={styles.ingredientItem}>
         <Text style={styles.ingredientText}>{data.name}</Text>
         <Text style={styles.quantityText}>
           {data.qt} {data.unitType}
         </Text>
-      </View>
+      </Checkbox>
     </View>
   ));
 
