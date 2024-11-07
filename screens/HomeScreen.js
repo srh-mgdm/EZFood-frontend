@@ -73,7 +73,7 @@ export default function HomeScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {
           if (data.result) {
-            console.log("New day created:", data.day);
+            // console.log("New day created:", data.day);
             dispatch(
               setDays([
                 ...days,
@@ -120,18 +120,6 @@ export default function HomeScreen({ navigation }) {
    * Then, it navigates to the Ingredients screen, passing the mealIds array as a prop.
    */
   const handleIngredientsList = () => {
-    // const mealIds = [];
-    // // Boucle sur chaque jour
-    // days.forEach((day) => {
-    //   // Boucle sur chaque repas du jour
-    //   day.meals.forEach((meal) => {
-    //     // Ajoute le mealId au tableau s'il existe
-    //     if (meal.mealId) {
-    //       // && !mealIds.includes(meal.mealId)  ___et n'est pas déjà dans le tableau
-    //       mealIds.push(meal.mealId);
-    //     }
-    //   });
-    // });
     navigation.navigate("Ingredients");
   };
 
@@ -178,8 +166,13 @@ export default function HomeScreen({ navigation }) {
           ))}
 
         {/* Always a "new day" card at the end of the list */}
-        <View style={  styles.sampleCard  }>
-        <TouchableOpacity onPress={() => handleAddDay()} style={styles.iconContainer}>
+        <View
+          style={[
+            styles.sampleCard,
+            { width: days.length > 0 ? "48%" : "100%" }, // Adjust width based on days array
+          ]}
+        >
+          <TouchableOpacity onPress={handleAddDay} style={styles.iconContainer}>
             <Image
               source={require("../assets/plus.png")}
               style={styles.iconImage}
@@ -218,9 +211,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: "10%", // safe area
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   head: {
     height: 100,
@@ -237,14 +230,12 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingBottom: 100,
-    
   },
   sampleCard: {
     height: 200,
     backgroundColor: "#b3a3ff",
     borderRadius: 10,
-    padding: 10,
-    marginVertical: 10, // the same with marginVertical of style 's dayCard
+    marginVertical: 10, // Match with DayCard margin
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -253,12 +244,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  iconContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  iconImage: {
+    width: 100,
+    height: 100,
+    resizeMode: "contain",
+    marginBottom: 10,
+  },
   sampleText: {
-     fontSize: 18,
-     fontWeight: "600",
-     color: "white",
-     marginBottom: 30,
-    },
+    fontSize: 18,
+    fontWeight: "600",
+    color: "white",
+    textAlign: "center",
+  },
   gradientOverlay: {
     position: "absolute",
     left: 0,
@@ -289,12 +290,5 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
-  },
-  iconImage: {
-    width: 100,
-    height: 100,
-    resizeMode: "contain",
-    marginBottom: -25,
-    marginLeft: 35,
   },
 });
