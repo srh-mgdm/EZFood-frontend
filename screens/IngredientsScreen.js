@@ -95,7 +95,7 @@ const handleCheckboxChange = (i) => {
           style={styles.actionButton}
           onPress={() => navigation.navigate("Home")}
         >
-          <Text style={styles.buttonText}>Retour à l'acceuil</Text>
+          <Text style={styles.buttonText}>Retour</Text>
         </TouchableOpacity>
       </View>
     </View>
