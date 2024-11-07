@@ -1,74 +1,82 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
-import Checkbox from 'expo-checkbox';
-import { LinearGradient } from "expo-linear-gradient";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import Checkbox from "expo-checkbox";
 import React, { useState, useEffect } from "react";
-import { useSelector , useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Header } from "../components/Header";
 
 export default function IngredientsScreen({ navigation }) {
-  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
 
   const days = useSelector((state) => state.days.value || []);
-
-
   const [ingredients, setIngredients] = useState([]);
   const [isChecked, setChecked] = useState(
     Array.isArray(ingredients) ? ingredients.map(() => false) : []
   );
 
   useEffect(() => {
-    mealIds = [];
-    meals = [];
-    days.forEach((e) => {
-      meals.push(e.meals);
-    });
+    const meals = days.flatMap((day) => day.meals.map((meal) => meal.mealId));
 
-    const collectedMealIds = meals.flatMap((dayMeals) =>
-      dayMeals.map((meal) => meal.mealId)
-    );
-    //console.log('Collected meal IDs:', collectedMealIds , 'Number of meals:',collectedMealIds.length);
-
-   fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/ingredients/list`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ mealIds: collectedMealIds })
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.result) {
-        //console.log(data)
-       setIngredients(data.shoppingList)
-      }
-
+    fetch(`${process.env.EXPO_PUBLIC_BACKEND_ADDRESS}/ingredients/list`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mealIds: meals }),
     })
-    .catch((error) => {
-      console.error("Fetch error:", error);
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          setLoading(false);
+          setIngredients(data.shoppingList);
+        }
+      })
+      .catch((error) => console.error("Fetch error:", error));
+  }, []);
 
-}, []);
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size='large' color='#7b4fff' />
+        <Text>Chargement des ingrédients...</Text>
+      </View>
+    );
+  }
 
-
-const handleCheckboxChange = (i) => {
-  const newCheckedItems = [...isChecked];
-  newCheckedItems[i] = !newCheckedItems[i];
-  setChecked(newCheckedItems);
-
-
-};
+  const handleCheckboxChange = (i) => {
+    const newCheckedItems = [...isChecked];
+    newCheckedItems[i] = !newCheckedItems[i];
+    setChecked(newCheckedItems);
+  };
 
   const content = ingredients.map((data, i) => (
-    <View key={i} style={styles.card}>
-      <View style={styles.ingredientItem }>
-        <View style={styles.ingredientText}>
-          <Checkbox value={isChecked[i]} onValueChange= {() => handleCheckboxChange(i)}/>
-          <Text style={ [styles.ingredientText, ( isChecked[i] ? {textDecorationLine: 'line-through'} : {})] }>{data.name}</Text>
-        </View>
-        <Text style={ [styles.quantityText , isChecked[i] ? {textDecorationLine: 'line-through'} : {}] }>
-          {data.qt} {data.unitType}
+    <View key={i} style={styles.ingredientItem}>
+      <View style={styles.ingredientTextContainer}>
+        <Checkbox
+          value={isChecked[i]}
+          onValueChange={() => handleCheckboxChange(i)}
+        />
+        <Text
+          style={[
+            styles.ingredientText,
+            isChecked[i] ? { textDecorationLine: "line-through" } : {},
+          ]}
+        >
+          {data.name}
         </Text>
       </View>
+      <Text
+        style={[
+          styles.quantityText,
+          isChecked[i] ? { textDecorationLine: "line-through" } : {},
+        ]}
+      >
+        {data.qt} {data.unitType}
+      </Text>
     </View>
   ));
 
@@ -77,19 +85,13 @@ const handleCheckboxChange = (i) => {
       <View style={styles.head}>
         <Header navigation={navigation} />
       </View>
-      <View style={styles.main}>
-        <ScrollView contentContainerStyle={styles.sectionContent} >
+
+      <View style={styles.scrollContainer}>
+        <ScrollView contentContainerStyle={styles.sectionContent}>
           {content}
         </ScrollView>
       </View>
 
-      {/* gradient for smooth fade over the list */}
-      <LinearGradient
-        colors={["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]}
-        style={styles.gradientOverlay}
-      />
-
-      {/* action buttons at the bottom of the screen */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.actionButton}
@@ -103,31 +105,32 @@ const handleCheckboxChange = (i) => {
 }
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   container: {
     flex: 1,
     backgroundColor: "lightblue",
-    marginTop: "10%", // safe area
-    justifyContent:'flex-start',
-    alignItems: 'center',
+    marginTop: "10%", // Safe area margin
+    alignItems: "center",
   },
   head: {
-    height: 50,
     width: "100%",
     padding: 5,
   },
-  main: {
-    marginTop: '8%',
-    height: '80%',
-  },
-
-  sectionContent: {
+  scrollContainer: {
+    flex: 1,
+    width: "90%",
     backgroundColor: "#fff",
     borderRadius: 12,
+    overflow: "hidden",
+    marginTop: 10,
+    marginBottom: 80, // Creates space above the button container
+  },
+  sectionContent: {
     padding: 10,
-    marginHorizontal: 15,
-    borderColor: "#e0e0e0",
-    borderWidth: 1,
-
   },
   ingredientItem: {
     flexDirection: "row",
@@ -136,34 +139,20 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "#e6e6e6",
   },
+  ingredientTextContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   ingredientText: {
     fontSize: 16,
     color: "#333",
     fontWeight: "500",
-    flexDirection: "row",
     paddingLeft: 10,
-    width: '70%',
   },
   quantityText: {
     fontSize: 16,
     color: "#333",
     fontWeight: "500",
-    width: '30%',
-
-  },
-  bottomBorder: {
-  height: 1,
-  backgroundColor: "#e0e0e0",
-  width: "100%",
-  alignSelf: "center",
-},
-
-  gradientOverlay: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 60,
-    height: 80,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -172,7 +161,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: "#FFF",
+    backgroundColor: "lightblue",
     paddingVertical: 15,
     paddingHorizontal: 20,
   },
