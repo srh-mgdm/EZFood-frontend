@@ -129,9 +129,10 @@ export default function LoginScreen({ navigation }) {
           <FontAwesome name='lock' size={20} color='#7b4fff' />
           <TextInput
             style={styles.input}
-            placeholder='Mot de pass'
+            placeholder='Mot de passe'
             secureTextEntry
             value={password}
+            autoCapitalize="none"
             onChangeText={setPassword} // Updates password state on change
           />
         </View>
@@ -143,7 +144,7 @@ export default function LoginScreen({ navigation }) {
             <FontAwesome name='lock' size={20} color='#7b4fff' />
             <TextInput
               style={styles.input}
-              placeholder='Réécrire Mot de pass'
+              placeholder='Réécrire Mot de passe'
               secureTextEntry
               value={retypePassword}
               onChangeText={setRetypePassword} // Updates retypePassword state on change
