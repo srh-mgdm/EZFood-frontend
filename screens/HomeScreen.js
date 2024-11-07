@@ -178,7 +178,7 @@ export default function HomeScreen({ navigation }) {
           ))}
 
         {/* Always a "new day" card at the end of the list */}
-        <View style={ [ styles.sampleCard ,  days.length > 0 ? {width: "48%"} : {width: "80%"} ] }>
+        <View style={  styles.sampleCard  }>
         <TouchableOpacity onPress={() => handleAddDay()} style={styles.iconContainer}>
             <Image
               source={require("../assets/plus.png")}
@@ -237,6 +237,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingBottom: 100,
+    
   },
   sampleCard: {
     height: 200,

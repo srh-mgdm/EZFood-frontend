@@ -7,10 +7,10 @@ import { Header } from "../components/Header";
 
 export default function IngredientsScreen({ navigation }) {
   const dispatch = useDispatch();
-  
+
   const days = useSelector((state) => state.days.value || []);
 
-  
+
   const [ingredients, setIngredients] = useState([]);
   const [isChecked, setChecked] = useState(
     Array.isArray(ingredients) ? ingredients.map(() => false) : []
@@ -46,16 +46,16 @@ export default function IngredientsScreen({ navigation }) {
     .catch((error) => {
       console.error("Fetch error:", error);
     });
-    
+
 }, []);
 
-       
+
 const handleCheckboxChange = (i) => {
   const newCheckedItems = [...isChecked];
   newCheckedItems[i] = !newCheckedItems[i];
   setChecked(newCheckedItems);
-  
-  
+
+
 };
 
   const content = ingredients.map((data, i) => (
@@ -71,7 +71,7 @@ const handleCheckboxChange = (i) => {
       </View>
     </View>
   ));
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.head}>
@@ -95,7 +95,7 @@ const handleCheckboxChange = (i) => {
           style={styles.actionButton}
           onPress={() => navigation.navigate("Home")}
         >
-          <Text style={styles.buttonText}>Retour à l'acceuil</Text>
+          <Text style={styles.buttonText}>Retour</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
     color: "#333",
     fontWeight: "500",
     width: '30%',
+
   },
   bottomBorder: {
   height: 1,
