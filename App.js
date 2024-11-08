@@ -1,4 +1,5 @@
 import React from "react";
+import { LogBox } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import "react-native-gesture-handler";
@@ -15,6 +16,9 @@ import user from "./reducers/user";
 import days from "./reducers/days";
 import meals from "./reducers/meals";
 import shop from "./reducers/shopping";
+
+// Ignore all log notifications
+LogBox.ignoreAllLogs();
 
 const store = configureStore({
   reducer: { user, days, meals, shop },
