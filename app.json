@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ezfood-frontend",
-    "slug": "ezfood-frontend",
+    "name": "ezfood",
+    "slug": "ezfood",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
