@@ -23,16 +23,17 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "7cc290e2-b46c-478d-9d54-84d5b4438e17"
-      }
-    },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/7cc290e2-b46c-478d-9d54-84d5b4438e17"
-    }
+      "url": "https://u.expo.dev/d86032b7-87ca-4dd7-b0d7-fdc0382751ee"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d86032b7-87ca-4dd7-b0d7-fdc0382751ee"
+      }
+    },
+    "owner": "sareh77"
   }
 }
