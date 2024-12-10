@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
-// import images from "../assets/mealImages"; // Import images from separate module
+
 
 // receiving `navigation` as a prop for navigation functionality
 export default function SearchScreen({ navigation, route }) {
@@ -29,7 +29,7 @@ export default function SearchScreen({ navigation, route }) {
 
     if (searchText.length > 0) {
       fetch(endpoint)
-        .then((response) => response.json())
+        .then((response) => response.json()) // transform response from JSON to object JS
         .then((data) => {
           if (data.result) {
             setMeals(data.meals); //Store meals in local state.
@@ -53,7 +53,7 @@ export default function SearchScreen({ navigation, route }) {
           dayId: route.params.dayId,
           mealId: meal._id,
           mealPosition: route.params.mealPosition,
-          mealImage: meal.mealImage, //من
+          mealImage: meal.mealImage, //
           previousScreen: "SearchMeal",
         });
       }

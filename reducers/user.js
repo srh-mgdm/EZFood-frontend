@@ -18,6 +18,7 @@ export const userSlice = createSlice({
     },
   },
 });
-
-export const { login, logout } = userSlice.actions;
+//Ce code exporte les Action Creators `login` et `logout`, qui sont utilisés pour créer des actions dans Redux.
+export const { login, logout } = userSlice.actions; 
+//Ce code exporte le Reducer de `userSlice`, qui gère les changements du state utilisateur dans Redux.
 export default userSlice.reducer;
